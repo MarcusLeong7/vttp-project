@@ -1,0 +1,147 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="saved-meals-container mat-elevation-z2">
+    <h2 class="mat-headline-6">My Saved Meals</h2>
+
+    <!-- Error message -->
+    @if (error$ | async; as error) {
+      <mat-error class="error-container">
+        {{ error }}
+      </mat-error>
+    }
+    <!-- Loading state -->
+    @if (isLoading$ | async) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <span>Loading meals...</span>
+      </div>
+    } @else {
+      <!-- No meals state -->
+      @if ((savedMeals$ | async)?.length === 0) {
+        <div class="no-meals-container">
+          <mat-icon color="primary">info</mat-icon>
+          <p class="mat-body-1">You haven't saved any meals yet. Browse the meal catalog to find and save meals.</p>
+          <button mat-raised-button color="primary" routerLink="/meals/search">Find Meals</button>
+        </div>
+      } @else {
+        <div class="meals-selection-container">
+          <!-- Meal selection grid -->
+          <div class="selection-panel">
+            <h3 class="mat-subtitle-1">Select meals to create a meal plan</h3>
+            <div class="meal-grid">
+              @for (meal of savedMeals$ | async; track meal.id) {
+                <div class="meal-card" [class.selected]="isMealSelected(meal.id)" (click)="toggleMealSelection(meal)">
+                  <div class="meal-image">
+                    <img [src]="meal.image" [alt]="meal.title">
+                    <div class="meal-actions">
+                      <button mat-icon-button class="delete-button" color="warn"
+                              matTooltip="Delete meal" (click)="deleteMeal(meal.id, $event)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="meal-content">
+                    <h4 class="meal-title">{{ meal.title }}</h4>
+                    <div class="meal-nutrition">
+                      <div class="nutrition-item">
+                        <span class="label">Calories:</span>
+                        <span class="value">{{ meal.calories }}</span>
+                      </div>
+                      <div class="nutrition-item">
+                        <span class="label">Protein:</span>
+                        <span class="value">{{ meal.protein }}</span>
+                      </div>
+                      <div class="nutrition-item">
+                        <span class="label">Carbs:</span>
+                        <span class="value">{{ meal.carbs }}</span>
+                      </div>
+                      <div class="nutrition-item">
+                        <span class="label">Fats:</span>
+                        <span class="value">{{ meal.fats }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Meal Plan Panel -->
+          <div class="plan-panel mat-elevation-z1">
+            <h3 class="mat-subtitle-1">Meal Plan Details</h3>
+
+            <!-- No meals selected state -->
+            @if ((selectedMeals$ | async)?.length === 0) {
+              <div class="empty-selection">
+                <mat-icon>restaurant</mat-icon>
+                <p>Select meals from your saved collection to create a meal plan</p>
+              </div>
+            } @else {
+              <!-- Selected meals list -->
+              <div class="selected-meals-list">
+                <h4>Selected Meals ({{ (selectedMeals$ | async)?.length }})</h4>
+                <mat-list>
+                  @for (meal of selectedMeals$ | async; track meal.id) {
+                    <mat-list-item>
+                      <span matListItemTitle>{{ meal.title }}</span>
+                      <span matListItemLine>{{ meal.calories }} calories</span>
+                      <button mat-icon-button (click)="toggleMealSelection(meal)">
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </mat-list-item>
+                  }
+                </mat-list>
+              </div>
+
+              <!-- Nutrition summary -->
+              @if (nutritionSummary$ | async; as summary) {
+                <div class="nutrition-summary">
+                  <h4>Nutrition Summary</h4>
+                  <div class="summary-grid">
+                    <div class="summary-item">
+                      <span class="summary-value">{{ summary.calories }}</span>
+                      <span class="summary-label">Calories</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="summary-value">{{ summary.protein }}g</span>
+                      <span class="summary-label">Protein</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="summary-value">{{ summary.carbs }}g</span>
+                      <span class="summary-label">Carbs</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="summary-value">{{ summary.fats }}g</span>
+                      <span class="summary-label">Fats</span>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- Meal plan form -->
+              <form [formGroup]="mealPlanForm" (submit)="createMealPlan()">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Meal Plan Name</mat-label>
+                  <input matInput formControlName="name" placeholder="e.g., Weekly Lunch Plan">
+                  @if (mealPlanForm.get('name')?.invalid && mealPlanForm.get('name')?.touched) {
+                    <mat-error>Name is required</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Description (Optional)</mat-label>
+                  <textarea matInput formControlName="description" placeholder="Add any notes about this meal plan"></textarea>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" type="submit" [disabled]="mealPlanForm.invalid" class="create-plan-button">
+                  Create Meal Plan
+                </button>
+              </form>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

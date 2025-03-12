@@ -1,0 +1,101 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Your NutriSense Account</h2>
+
+    @if (successMessage) {
+      <div class="success-message">
+        {{ successMessage }}
+      </div>
+    }
+
+    <form [formGroup]="registerForm" (submit)="submit()">
+      <!-- Email field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your email"
+          [class.invalid]="emailControl?.invalid && emailControl?.touched"
+        >
+
+        @if (emailControl?.invalid && emailControl?.touched) {
+          <div class="error-message">
+            @if (emailControl?.errors?.['required']) {
+              <span>Email is required</span>
+            } @else if (emailControl?.errors?.['email']) {
+              <span>Please enter a valid email address</span>
+            } @else if (emailControl?.errors?.['pattern']) {
+              <span>Invalid email format. Please include a valid domain (e.g., .com, .org).</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password"
+          placeholder="Enter your password"
+          [class.invalid]="passwordControl?.invalid && passwordControl?.touched"
+        >
+
+        @if (passwordControl?.invalid && passwordControl?.touched) {
+          <div class="error-message">
+            @if (passwordControl?.errors?.['required']) {
+              <span>Password is required</span>
+            } @else if (passwordControl?.errors?.['minlength']) {
+              <span>Password must be at least 8 characters long</span>
+            } @else if (passwordControl?.errors?.['pattern']) {
+              <span>Password must include uppercase, lowercase, number, and special character</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Confirm Password field -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          [class.invalid]="confirmPasswordControl?.invalid && confirmPasswordControl?.touched"
+        >
+
+        @if (confirmPasswordControl?.invalid && confirmPasswordControl?.touched) {
+          <div class="error-message">
+            @if (confirmPasswordControl?.errors?.['required']) {
+              <span>Please confirm your password</span>
+            } @else if (confirmPasswordControl?.errors?.['passwordMismatch']) {
+              <span>Passwords do not match</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Error message display -->
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- Submit button -->
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid || isLoading"
+        class="register-button"
+      >
+        @if (isLoading) {
+          <span>Creating Account...</span>
+        } @else {
+          <span>Create Account</span>
+        }
+      </button>
+    </form>
+
+    <div class="login-link">
+      <span>Already have an account? </span>
+      <a routerLink="/login">Log in</a>
+    </div>
+  </div>
+</div>

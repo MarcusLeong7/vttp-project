@@ -1,0 +1,73 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="meal-search-container mat-elevation-z2">
+    <h2 class="mat-headline-6">Search Meals</h2>
+
+    @if (errorMessage) {
+      <mat-error class="error-container">
+        {{ errorMessage }}
+      </mat-error>
+    }
+
+    <form [formGroup]="searchForm" (submit)="search()">
+      <table class="search-criteria-table">
+        <tr>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>Max Calories</mat-label>
+              <input matInput type="number" formControlName="maxCalories" placeholder="e.g., 500">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>Min Protein (g)</mat-label>
+              <input matInput type="text" formControlName="minProtein" placeholder="e.g., 10g">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>Max Carbs (g)</mat-label>
+              <input matInput type="text" formControlName="maxCarbs" placeholder="e.g., 20g">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>Max Fats (g)</mat-label>
+              <input matInput type="text" formControlName="maxFats" placeholder="e.g., 15g">
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+          <mat-icon>search</mat-icon>
+          @if (isLoading) {
+            <span>Searching...</span>
+          } @else {
+            <span>Search</span>
+          }
+        </button>
+        <button mat-stroked-button color="warn" type="button" (click)="resetForm()">
+          <mat-icon>refresh</mat-icon>
+          Reset
+        </button>
+      </div>
+    </form>
+
+      @if (meals.length > 0) {
+        <div class="results-container">
+          <app-meal-list [meals]="meals" (selectMeals)="selectMeals($event)"
+                         (saveMeals)="saveMeals($event)"></app-meal-list>
+        </div>
+      } @else if (!isLoading) {
+        <div class="no-results-container">
+          <mat-icon color="primary">info</mat-icon>
+          <p class="mat-body-1">No meals found. Please adjust your search criteria.</p>
+        </div>
+      }
+  </div>
+</div>

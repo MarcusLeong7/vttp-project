@@ -1,0 +1,47 @@
+<div class="meal-list-container">
+  <h3>Available Meals</h3>
+
+  <div class="meal-grid">
+    @for (meal of meals; track meal.id) {
+      <div class="meal-card">
+        <div class="meal-image">
+          <img [src]="meal.image" [alt]="meal.title">
+          <div class="meal-selection">
+            <input type="checkbox" [id]="'meal-' + meal.id" (change)="toggleMealSelection(meal.id, $event)">
+            <label [for]="'meal-' + meal.id">Select</label>
+          </div>
+        </div>
+        <div class="meal-content">
+          <h4 class="meal-title">{{ meal.title }}</h4>
+          <div class="meal-nutrition">
+            <div class="nutrition-item">
+              <span class="label">Calories:</span>
+              <span class="value">{{ meal.calories }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Protein:</span>
+              <span class="value">{{ meal.protein }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Carbs:</span>
+              <span class="value">{{ meal.carbs }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Fats:</span>
+              <span class="value">{{ meal.fats }}</span>
+            </div>
+          </div>
+          <button class="recipe-button" (click)="viewRecipe(meal.id)">View Recipe</button>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-meals">No meals available</div>
+    }
+  </div>
+
+  <div class="action-bar">
+    <button class="save-button" (click)="saveSelectedMeals()">
+      Save Selected Meals
+    </button>
+  </div>
+</div>

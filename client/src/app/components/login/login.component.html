@@ -1,0 +1,68 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>NutriSense Login</h2>
+
+
+    <form [formGroup]="form" (submit)="submit()">
+      <table>
+        <!-- Email field -->
+        <tr>
+          <td>Email:</td>
+          <td>
+            <input type="email" formControlName="email" placeholder="Enter your email">
+            @if (form.controls['email'].invalid && form.controls['email'].touched) {
+              <div class="error-message">
+                @if (form.controls['email'].errors?.['required']) {
+                  <span>Email is required</span>
+                } @else if (form.controls['email'].errors?.['email']) {
+                  <span>Please enter a valid email</span>
+                }
+              </div>
+            }
+          </td>
+        </tr>
+        <!-- Password field-->
+        <tr>
+          <td>Password:</td>
+          <td>
+            <input type="password" formControlName="password" placeholder="Enter your password">
+            @if (form.controls['password'].invalid && form.controls['password'].touched) {
+              <div class="error-message">
+                @if (form.controls['password'].errors?.['required']) {
+                  <span>Password is required</span>
+                }
+              </div>
+            }
+          </td>
+        </tr>
+        <!-- Error message display -->
+        @if (errorMessage) {
+          <tr>
+            <td></td>
+            <td>
+              <div class="error-message">{{ errorMessage }}</div>
+            </td>
+          </tr>
+        }
+        <tr>
+          <td></td>
+          <td>
+            <button type="submit" [disabled]="form.invalid || isLoading">
+              @if (!isLoading) {
+                <span>Login</span>
+              } @else {
+                <span>Logging in...</span>
+              }
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <div class="register-link">
+      <span>Don't have an account? </span>
+      <a routerLink="/register">Register</a>
+    </div>
+
+  </div>
+</div>

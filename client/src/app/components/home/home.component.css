@@ -1,0 +1,184 @@
+/* Main container */
+.home-container {
+  min-height: calc(100vh - 64px); /* Adjust for your toolbar height */
+  padding: 40px 0;
+  background-color: #f8f2f2; /* Material grey-50 equivalent */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Section spacing */
+.welcome-section,
+.features-section,
+.stats-section {
+  margin-bottom: 40px;
+}
+
+/* Title styling */
+.section-title {
+  position: relative;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  color: #37474f; /* Material blue-grey-800 equivalent */
+  font-weight: 500;
+}
+
+.section-title:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: #3f51b5; /* Material primary color equivalent */
+}
+
+/* Welcome Card */
+.welcome-card {
+  background: linear-gradient(135deg, #6A11CB, #2575FC);
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(106, 17, 203, 0.2); /* Subtle shadow that matches the gradient */
+}
+
+.welcome-card mat-card-content {
+  padding: 50px;
+}
+
+.welcome-card h2 {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.welcome-card p {
+  margin-bottom: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  height: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 24px auto 16px;
+}
+
+.feature-icon-wrapper mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  color: white;
+}
+
+.feature-card mat-card-content {
+  text-align: center;
+  padding: 0 16px 16px;
+}
+
+.feature-card h4 {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.feature-card p {
+  color: #616161; /* Material grey-700 equivalent */
+  min-height: 80px;
+}
+
+.feature-card mat-card-actions {
+  padding: 16px;
+}
+
+/* Icon backgrounds */
+.meal-icon {
+  background: linear-gradient(135deg, #2e7d32, #4caf50);
+}
+
+.workout-icon {
+  background: linear-gradient(135deg, #e65100, #ff9800);
+}
+
+.calendar-icon {
+  background: linear-gradient(135deg, #1565c0, #2196f3);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card mat-card-content {
+  padding: 24px 16px;
+}
+
+.stat-card h5 {
+  color: #757575; /* Material grey-600 equivalent */
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #3f51b5; /* Material primary color equivalent */
+}
+
+/* Responsive adjustments */
+@media (max-width: 599px) {
+  .features-grid,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card p {
+    min-height: auto;
+  }
+
+  .welcome-card mat-card-content {
+    padding: 16px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}

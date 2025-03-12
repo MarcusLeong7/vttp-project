@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<div class="home-container mat-app-background">
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <mat-card class="welcome-card">
+        <mat-card-content>
+          <h2 class="mat-headline-4">Welcome to NutriSense</h2>
+          <p class="mat-body-1">
+            Your personal nutrition and fitness assistant. Elevate your health journey with
+            personalized meal planning, tailored workout routines, and seamless schedule management—all
+            designed to help you achieve your wellness goals with elegance and precision.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Main Features Section -->
+    <div class="features-section">
+      <h3 class="section-title mat-headline-5">Explore Features</h3>
+
+      <div class="features-grid">
+        <!-- Meal Search Feature -->
+        <mat-card class="feature-card">
+          <div class="feature-icon-wrapper meal-icon">
+            <mat-icon>restaurant</mat-icon>
+          </div>
+          <mat-card-content>
+            <h4 class="mat-headline-6">Meal Discovery</h4>
+            <p class="mat-body-2">
+              Discover nutritionally balanced meals tailored to your preferences and create personalized dining experiences.
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="navigateToMealSearch()">
+              Explore Meals
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Workout Search Feature -->
+        <mat-card class="feature-card">
+          <div class="feature-icon-wrapper workout-icon">
+            <mat-icon>fitness_center</mat-icon>
+          </div>
+          <mat-card-content>
+            <h4 class="mat-headline-6">Fitness Studio</h4>
+            <p class="mat-body-2">
+              Access curated workout routines designed to complement your nutrition plan and enhance your fitness journey.
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="navigateToWorkoutSearch()">
+              Discover Workouts
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- Calendar Integration Feature -->
+        <mat-card class="feature-card">
+          <div class="feature-icon-wrapper calendar-icon">
+            <mat-icon>calendar_today</mat-icon>
+          </div>
+          <mat-card-content>
+            <h4 class="mat-headline-6">Wellness Calendar</h4>
+            <p class="mat-body-2">
+              Seamlessly manage your meal and workout schedule with Google Calendar integration for a balanced lifestyle.
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="navigateToCalendar()">
+              View Schedule
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Quick Stats Section -->
+    <div class="stats-section">
+      <h3 class="section-title mat-headline-5">Your Progress</h3>
+
+      <div class="stats-grid">
+        <mat-card class="stat-card">
+          <mat-card-content>
+            <h5 class="mat-subtitle-1">Meals Planned</h5>
+            <p class="stat-value">0</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+          <mat-card-content>
+            <h5 class="mat-subtitle-1">Workouts Completed</h5>
+            <p class="stat-value">0</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+          <mat-card-content>
+            <h5 class="mat-subtitle-1">Wellness Streak</h5>
+            <p class="stat-value">0 days</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
