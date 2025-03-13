@@ -71,6 +71,46 @@ public class MealPlanRepo {
         return null;
     }
 
+    /* Update individual Meal Plan*/
+    @Transactional
+    public boolean updateMealPlan(MealPlan mealPlan) {
+        // First update the meal plan basic information
+        int rowsUpdated = template.update(
+                SQL_UPDATE_MEAL_PLAN,
+                mealPlan.getName(),
+                mealPlan.getDescription(),
+                mealPlan.getDayOfWeek(),
+                mealPlan.getId(),
+                mealPlan.getUserId()
+        );
+
+        if (rowsUpdated > 0) {
+            // Then delete all existing meal plan items
+            template.update(SQL_DELETE_MEAL_PLAN_ITEMS, mealPlan.getId());
+
+            // Then insert all the new meal plan items
+            for (MealPlanItem item : mealPlan.getItems()) {
+                item.setMealPlanId(mealPlan.getId());
+                template.update(
+                        SQL_INSERT_MEAL_PLAN_ITEM,
+                        item.getMealPlanId(),
+                        item.getMealId(),
+                        item.getMealTitle(),
+                        item.getMealImage(),
+                        item.getCalories(),
+                        item.getProtein(),
+                        item.getCarbs(),
+                        item.getFats(),
+                        item.getMealType()
+                );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     /* DELETE A MEAL PLAN */
     @Transactional
     public boolean deleteMealPlan(String id, String email) {

@@ -30,6 +30,14 @@ public class MealPlanService {
     public MealPlan getMealPlanById(String id) {
         return mealPlanRepo.getMealPlanById(id);
     }
+
+    /* Update specific meal plan */
+    public boolean updateMealPlan(MealPlan mealPlan, String email) {
+        // Ensure the meal plan belongs to this user
+        mealPlan.setUserId(email);
+        return mealPlanRepo.updateMealPlan(mealPlan);
+    }
+
     /* Delete a meal plan*/
     public boolean deleteMealPlan(String id, String email) {
         return mealPlanRepo.deleteMealPlan(id, email);

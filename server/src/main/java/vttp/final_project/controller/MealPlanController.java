@@ -21,6 +21,7 @@ public class MealPlanController {
     @Autowired
     private MealPlanService mealPlanSvc;
 
+    /* GET ALL MEAL PLANS FOR USER */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getMealPlans(Principal principal) {
         if (principal == null) {
@@ -39,6 +40,42 @@ public class MealPlanController {
         }
 
         JsonArray response = arrayBuilder.build();
+        return ResponseEntity.ok(response.toString());
+    }
+
+    /* Get a specific meal plan by id */
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMealPlan(@PathVariable String id, Principal principal) {
+        if (principal == null) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Authentication required")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+        }
+
+        String email = principal.getName();
+
+        MealPlan mealPlan = mealPlanSvc.getMealPlanById(id);
+
+        if (mealPlan == null) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Meal plan not found")
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.toString());
+        }
+
+        // Verify the meal plan belongs to the user
+        if (!mealPlan.getUserId().equals(email)) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "You do not have permission to view this meal plan")
+                    .build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error.toString());
+        }
+
+        JsonObject response = mealPlanToJsonObject(mealPlan);
         return ResponseEntity.ok(response.toString());
     }
 
@@ -125,6 +162,120 @@ public class MealPlanController {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")
                     .add("message", "Failed to create meal plan: " + e.getMessage())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error.toString());
+        }
+    }
+
+    /* UPDATE SPECIFIC MEAL PLAN */
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateMealPlan(@PathVariable String id, @RequestBody Map<String, Object> payload, Principal principal) {
+        if (principal == null) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Authentication required")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+        }
+
+        String email = principal.getName();
+
+        // Verify the meal plan exists and belongs to the user
+        MealPlan existingPlan = mealPlanSvc.getMealPlanById(id);
+        if (existingPlan == null) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Meal plan not found")
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error.toString());
+        }
+
+        if (!existingPlan.getUserId().equals(email)) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "You do not have permission to update this meal plan")
+                    .build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error.toString());
+        }
+
+        try {
+            String name = (String) payload.get("name");
+            String description = (String) payload.get("description");
+            Integer dayOfWeek = null;
+
+            // Safely parse dayOfWeek if it exists
+            if (payload.get("dayOfWeek") != null) {
+                try {
+                    dayOfWeek = Integer.parseInt(payload.get("dayOfWeek").toString());
+                } catch (NumberFormatException e) {
+                    JsonObject error = Json.createObjectBuilder()
+                            .add("status", "error")
+                            .add("message", "Invalid dayOfWeek value. Must be a number between 0-6.")
+                            .build();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.toString());
+                }
+            }
+
+            // Get updated meals data
+            List<Map<String, Object>> mealsData = (List<Map<String, Object>>) payload.get("meals");
+
+            if (mealsData == null || mealsData.isEmpty()) {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Meal plan must contain at least one meal")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.toString());
+            }
+
+            // Update meal plan with new data
+            MealPlan updatedPlan = new MealPlan();
+            updatedPlan.setId(id);
+            updatedPlan.setName(name);
+            updatedPlan.setDescription(description);
+            updatedPlan.setDayOfWeek(dayOfWeek);
+            updatedPlan.setUserId(email);
+
+            // Add all meal items
+            for (Map<String, Object> mealData : mealsData) {
+                MealPlanItem item = new MealPlanItem();
+
+                item.setMealId((String) mealData.get("mealId"));
+                item.setMealTitle((String) mealData.get("mealTitle"));
+                item.setMealImage((String) mealData.get("mealImage"));
+                item.setCalories((String) mealData.get("calories"));
+                item.setProtein((String) mealData.get("protein"));
+                item.setCarbs((String) mealData.get("carbs"));
+                item.setFats((String) mealData.get("fats"));
+                item.setMealType((String) mealData.get("mealType"));
+
+                updatedPlan.addItem(item);
+            }
+
+            // Perform the update
+            boolean updateSuccess = mealPlanSvc.updateMealPlan(updatedPlan, email);
+
+            if (!updateSuccess) {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Failed to update meal plan")
+                        .build();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error.toString());
+            }
+            // Fetch the updated meal plan to return in the response
+            MealPlan refreshedPlan = mealPlanSvc.getMealPlanById(id);
+
+            JsonObject response = Json.createObjectBuilder()
+                    .add("status", "success")
+                    .add("message", "Meal plan updated successfully")
+                    .add("mealPlan", mealPlanToJsonObject(refreshedPlan))
+                    .build();
+
+            return ResponseEntity.ok(response.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Failed to update meal plan: " + e.getMessage())
                     .build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error.toString());
         }
