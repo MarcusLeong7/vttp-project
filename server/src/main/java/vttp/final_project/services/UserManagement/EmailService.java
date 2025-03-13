@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
+   /* @Autowired
     private JavaMailSender mailSender;
 
     @Value("${app.email.from}")
@@ -48,5 +48,5 @@ public class EmailService {
                "If you have any questions, feel free to contact our support team.\n\n" +
                "Best regards,\n" +
                "The NutriSense Team";
-    }
+    }*/
 }

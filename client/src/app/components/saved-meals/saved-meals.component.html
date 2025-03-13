@@ -1,3 +1,4 @@
+<!-- Key parts of src/app/components/saved-meals/saved-meals.component.html -->
 <app-header></app-header>
 
 <div class="page-container">
@@ -10,6 +11,7 @@
         {{ error }}
       </mat-error>
     }
+
     <!-- Loading state -->
     @if (isLoading$ | async) {
       <div class="loading-container">
@@ -61,13 +63,27 @@
                         <span class="value">{{ meal.fats }}</span>
                       </div>
                     </div>
+
+                    <!-- Meal Type Selector (NEW) - only shown when meal is selected -->
+                    @if (isMealSelected(meal.id)) {
+                      <div class="meal-type-selector">
+                        <mat-form-field appearance="outline" class="type-field">
+                          <mat-label>Meal Type</mat-label>
+                          <mat-select [value]="getMealType(meal.id)" (selectionChange)="updateMealType(meal.id, $event.value)">
+                            @for (type of mealTypes; track type) {
+                              <mat-option [value]="type">{{ type | titlecase }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    }
                   </div>
                 </div>
               }
             </div>
           </div>
 
-          <!-- Meal Plan Panel -->
+          <!-- Meal Plan Form Panel -->
           <div class="plan-panel mat-elevation-z1">
             <h3 class="mat-subtitle-1">Meal Plan Details</h3>
 
@@ -85,7 +101,7 @@
                   @for (meal of selectedMeals$ | async; track meal.id) {
                     <mat-list-item>
                       <span matListItemTitle>{{ meal.title }}</span>
-                      <span matListItemLine>{{ meal.calories }} calories</span>
+                      <span matListItemLine>{{ meal.calories }} calories | {{ getMealType(meal.id) | titlecase }}</span>
                       <button mat-icon-button (click)="toggleMealSelection(meal)">
                         <mat-icon>clear</mat-icon>
                       </button>
@@ -119,7 +135,7 @@
                 </div>
               }
 
-              <!-- Meal plan form -->
+              <!-- Meal plan form (NEW) -->
               <form [formGroup]="mealPlanForm" (submit)="createMealPlan()">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Meal Plan Name</mat-label>
@@ -132,6 +148,18 @@
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Description (Optional)</mat-label>
                   <textarea matInput formControlName="description" placeholder="Add any notes about this meal plan"></textarea>
+                </mat-form-field>
+
+                <!-- Day of Week Selector (NEW) -->
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Day of Week (Optional)</mat-label>
+                  <mat-select formControlName="dayOfWeek">
+                    <mat-option [value]="null">Any day</mat-option>
+                    @for (day of dayOptions; track day.value) {
+                      <mat-option [value]="day.value">{{ day.label }}</mat-option>
+                    }
+                  </mat-select>
+                  <mat-hint>Assign this meal plan to a specific day</mat-hint>
                 </mat-form-field>
 
                 <button mat-raised-button color="primary" type="submit" [disabled]="mealPlanForm.invalid" class="create-plan-button">

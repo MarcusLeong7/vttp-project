@@ -2,8 +2,11 @@ import {Component, inject, OnInit} from '@angular/core';
 import {MealService} from '../../services/meal.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Meal, NutritionInfo} from '../../models/Meal';
+import {Meal} from '../../models/Meal/Meal';
 import {MealStore} from '../../stores/meal.store';
+import { Router } from '@angular/router';
+import { MealPlanService } from '../../services/meal.plan.service';
+import {MealType} from '../../models/MealPlan/MealPlan';
 
 @Component({
   selector: 'app-saved-meals',
@@ -15,9 +18,11 @@ export class SavedMealsComponent implements OnInit {
 
   // Dependency Injections
   private mealService = inject(MealService);
+  private mealPlanService = inject(MealPlanService);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
   private mealStore = inject(MealStore);
+  private router = inject(Router);
 
   // Observable streams from the store
   savedMeals$ = this.mealStore.savedMeals$;
@@ -29,10 +34,28 @@ export class SavedMealsComponent implements OnInit {
   // Form for creating meal plan
   mealPlanForm: FormGroup;
 
+  // Day options for select dropdown
+  dayOptions = [
+    { value: 0, label: 'Sunday' },
+    { value: 1, label: 'Monday' },
+    { value: 2, label: 'Tuesday' },
+    { value: 3, label: 'Wednesday' },
+    { value: 4, label: 'Thursday' },
+    { value: 5, label: 'Friday' },
+    { value: 6, label: 'Saturday' }
+  ];
+
+  // Meal types
+  mealTypes = Object.values(MealType);
+
+  // Map to store meal type assignments
+  mealTypeAssignments = new Map<string, MealType>();
+
   constructor() {
     this.mealPlanForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['']
+      description: [''],
+      dayOfWeek: [null]
     });
   }
 
@@ -53,6 +76,11 @@ export class SavedMealsComponent implements OnInit {
   // Toggle meal selection
   toggleMealSelection(meal: Meal): void {
     this.mealStore.toggleMealSelection(meal);
+
+    // Initialize meal type to breakfast if not already set
+    if (!this.mealTypeAssignments.has(meal.id)) {
+      this.mealTypeAssignments.set(meal.id, MealType.BREAKFAST);
+    }
   }
 
   // Check if a meal is selected
@@ -64,20 +92,14 @@ export class SavedMealsComponent implements OnInit {
     return isSelected;
   }
 
-  // Delete Meal
-  deleteMeal(mealId: string, event: Event): void {
-    // Prevent the click from also selecting the meal
-    event.stopPropagation();
+  // Update meal type assignment
+  updateMealType(mealId: string, type: MealType): void {
+    this.mealTypeAssignments.set(mealId, type);
+  }
 
-    // Confirm deletion
-    if (confirm('Are you sure you want to delete this meal?')) {
-      this.mealStore.deleteMeal(mealId);
-
-      // Show a snackbar notification
-      this.snackBar.open('Meal deleted successfully', 'Close', {
-        duration: 3000
-      });
-    }
+  // Get the assigned meal type
+  getMealType(mealId: string): MealType {
+    return this.mealTypeAssignments.get(mealId) || MealType.BREAKFAST;
   }
 
   // Create a meal plan
@@ -98,17 +120,55 @@ export class SavedMealsComponent implements OnInit {
       return;
     }
 
+    // Prepare meal items with type assignments
+    const mealItems = selectedMeals.map(meal => ({
+      mealId: meal.id,
+      mealTitle: meal.title,
+      mealImage: meal.image,
+      calories: meal.calories,
+      protein: meal.protein,
+      carbs: meal.carbs,
+      fats: meal.fats,
+      mealType: this.getMealType(meal.id)
+    }));
+
+    // Prepare meal plan data
     const mealPlanData = {
       ...this.mealPlanForm.value,
-      meals: selectedMeals
+      meals: mealItems
     };
 
-    // We'll implement the actual save functionality later
-    console.log('Creating meal plan:', mealPlanData);
-    this.snackBar.open('Meal plan created successfully!', 'Close', {
-      duration: 3000
+    // Create meal plan via service
+    this.mealPlanService.createMealPlan(mealPlanData).subscribe({
+      next: (response) => {
+        this.snackBar.open('Meal plan created successfully!', 'Close', {
+          duration: 3000
+        });
+        this.mealPlanForm.reset();
+        this.router.navigate(['/meal-plans']);
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to create meal plan. Please try again.', 'Close', {
+          duration: 3000
+        });
+        console.error('Error creating meal plan:', error);
+      }
     });
+  }
 
-    this.mealPlanForm.reset();
+  // Delete Meal (existing functionality)
+  deleteMeal(mealId: string, event: Event): void {
+    // Prevent the click from also selecting the meal
+    event.stopPropagation();
+
+    // Confirm deletion
+    if (confirm('Are you sure you want to delete this meal?')) {
+      this.mealStore.deleteMeal(mealId);
+
+      // Show a snackbar notification
+      this.snackBar.open('Meal deleted successfully', 'Close', {
+        duration: 3000
+      });
+    }
   }
 }

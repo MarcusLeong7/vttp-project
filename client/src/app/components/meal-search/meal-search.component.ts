@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MealService} from '../../services/meal.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Meal, MealSearchParams} from '../../models/Meal';
+import {Meal, MealSearchParams} from '../../models/Meal/Meal';
 import {Router} from '@angular/router';
 
 @Component({

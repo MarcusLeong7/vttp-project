@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ComponentStore} from '@ngrx/component-store';
-import {MealState} from '../models/MealState';
+import {MealState} from '../models/Meal/MealState';
 import {MealService} from '../services/meal.service';
-import {Meal, NutritionInfo} from '../models/Meal';
+import {Meal, NutritionInfo} from '../models/Meal/Meal';
 import {catchError, EMPTY, Observable, switchMap, tap} from 'rxjs';
 
 // Initial state

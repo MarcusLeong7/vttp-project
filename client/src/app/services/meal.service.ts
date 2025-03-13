@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Meal, MealSearchParams, NutritionInfo} from '../models/Meal';
+import {Meal, MealSearchParams, NutritionInfo} from '../models/Meal/Meal';
 import {map, Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})

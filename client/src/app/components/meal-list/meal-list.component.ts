@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {Meal} from '../../models/Meal';
+import {Meal} from '../../models/Meal/Meal';
 import {Subject} from 'rxjs';
 import {MealService} from '../../services/meal.service';
 
