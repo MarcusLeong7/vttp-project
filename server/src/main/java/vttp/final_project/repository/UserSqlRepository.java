@@ -6,7 +6,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import vttp.final_project.models.User;
 
-import static vttp.final_project.repository.queries.SQL.*;
+import static vttp.final_project.repository.queries.UserSql.*;
 
 
 @Repository

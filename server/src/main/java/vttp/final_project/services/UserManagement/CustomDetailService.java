@@ -1,4 +1,4 @@
-package vttp.final_project.services;
+package vttp.final_project.services.UserManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

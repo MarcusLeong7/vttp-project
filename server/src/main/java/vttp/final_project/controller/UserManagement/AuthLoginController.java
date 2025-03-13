@@ -1,4 +1,4 @@
-package vttp.final_project.controller;
+package vttp.final_project.controller.UserManagement;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vttp.final_project.configuration.jwtToken.JwtUtil;
 import vttp.final_project.models.LoginUser;
 import vttp.final_project.models.User;
-import vttp.final_project.services.UserService;
+import vttp.final_project.services.UserManagement.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
