@@ -21,6 +21,7 @@ export interface MealPlan {
 }
 
 // For individual items in a meal plan
+// Naming must map to backend
 export interface MealPlanItem {
   id?: number;
   mealId: string;

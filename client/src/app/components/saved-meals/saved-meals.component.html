@@ -64,9 +64,9 @@
                       </div>
                     </div>
 
-                    <!-- Meal Type Selector (NEW) - only shown when meal is selected -->
+                    <!-- Meal Type Selector- only shown when meal is selected -->
                     @if (isMealSelected(meal.id)) {
-                      <div class="meal-type-selector">
+                      <div class="meal-type-selector" (click)="$event.stopPropagation()">
                         <mat-form-field appearance="outline" class="type-field">
                           <mat-label>Meal Type</mat-label>
                           <mat-select [value]="getMealType(meal.id)" (selectionChange)="updateMealType(meal.id, $event.value)">

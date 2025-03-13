@@ -130,10 +130,10 @@ public class MealPlanController {
             // Add meals to plan
             for (Map<String, Object> mealData : mealsData) {
                 MealPlanItem item = new MealPlanItem();
-
-                item.setMealId((String) mealData.get("id"));
-                item.setMealTitle((String) mealData.get("title"));
-                item.setMealImage((String) mealData.get("image"));
+                System.out.println("Meal data received: " + mealData);
+                item.setMealId((String) mealData.get("mealId"));
+                item.setMealTitle((String) mealData.get("mealTitle"));
+                item.setMealImage((String) mealData.get("mealImage"));
                 item.setCalories((String) mealData.get("calories"));
                 item.setProtein((String) mealData.get("protein"));
                 item.setCarbs((String) mealData.get("carbs"));
