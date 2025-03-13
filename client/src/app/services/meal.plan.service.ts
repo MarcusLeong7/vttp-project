@@ -42,7 +42,7 @@ export class MealPlanService {
 
   // Update an existing meal plan
   updateMealPlan(id: string, planData: any): Observable<any> {
-    return this.http.put<any>(`/api/mealplans/${id}`, planData)
+    return this.http.put<any>(`/api/mealplans/${id}/edit`, planData)
       .pipe(
         map(response => {
           const data = typeof response === 'string' ? JSON.parse(response) : response;

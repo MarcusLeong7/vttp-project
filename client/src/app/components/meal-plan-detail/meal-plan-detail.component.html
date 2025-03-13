@@ -10,10 +10,16 @@
 
       @if (mealPlan) {
         <h2 class="mat-headline-4">{{ mealPlan.name }}</h2>
-
-        <button mat-icon-button color="warn" (click)="deleteMealPlan()" matTooltip="Delete meal plan">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <div class="action-buttons">
+          <!-- Edit Button-->
+          <button mat-icon-button color="primary" (click)="editMealPlan()" matTooltip="Edit meal plan">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <!-- Delete Button-->
+          <button mat-icon-button color="warn" (click)="deleteMealPlan()" matTooltip="Delete meal plan">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       }
     </div>
 

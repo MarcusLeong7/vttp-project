@@ -168,7 +168,7 @@ public class MealPlanController {
     }
 
     /* UPDATE SPECIFIC MEAL PLAN */
-    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}/edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateMealPlan(@PathVariable String id, @RequestBody Map<String, Object> payload, Principal principal) {
         if (principal == null) {
             JsonObject error = Json.createObjectBuilder()

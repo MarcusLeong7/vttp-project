@@ -123,6 +123,11 @@ export class MealPlanDetailComponent {
     }, 0);
   }
 
+  // Edit Meal Plan
+  editMealPlan(): void {
+    this.router.navigate(['/meal-plans', this.mealPlan.id, 'edit']);
+  }
+
   // Delete meal plan
   deleteMealPlan(): void {
     if (!this.mealPlan) return;

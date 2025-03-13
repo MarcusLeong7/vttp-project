@@ -21,6 +21,7 @@ import {SavedMealsComponent} from './components/saved-meals/saved-meals.componen
 import {MealStore} from './stores/meal.store';
 import { MealPlanDetailComponent } from './components/meal-plan-detail/meal-plan-detail.component';
 import { MealPlanListComponent } from './components/meal-plan-list/meal-plan-list.component';
+import { MealPlanEditComponent } from './components/meal-plan-edit/meal-plan-edit.component';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -38,6 +39,7 @@ export const appRoutes: Routes = [
   // Meal Plans
   {path: 'meal-plans', component: MealPlanListComponent, canActivate: [authguard]},
   {path: 'meal-plans/:id', component: MealPlanDetailComponent, canActivate: [authguard]},
+  { path: 'meal-plans/:id/edit', component: MealPlanEditComponent, canActivate: [authguard] },
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -55,6 +57,7 @@ export const appRoutes: Routes = [
     SavedMealsComponent,
     MealPlanListComponent,
     MealPlanDetailComponent,
+    MealPlanEditComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,
