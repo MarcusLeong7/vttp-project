@@ -1,1 +1,93 @@
-<p>meal-plan-list works!</p>
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="meal-plans-container mat-elevation-z2">
+    <div class="header-section">
+      <h2 class="mat-headline-5">My Meal Plans</h2>
+      <button mat-raised-button color="primary" (click)="createNewPlan()">
+        <mat-icon>add</mat-icon>
+        Create New Plan
+      </button>
+    </div>
+
+    <!-- Error message -->
+    @if (error) {
+      <mat-error class="error-container">
+        {{ error }}
+      </mat-error>
+    }
+
+    <!-- Loading state -->
+    @if (isLoading) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <span>Loading meal plans...</span>
+      </div>
+    } @else {
+      <!-- No meal plans state -->
+      @if (mealPlans.length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">restaurant_menu</mat-icon>
+          <h3>No Meal Plans Yet</h3>
+          <p>Create your first meal plan to get started on your nutrition journey.</p>
+          <button mat-raised-button color="primary" (click)="createNewPlan()">
+            Create Your First Meal Plan
+          </button>
+        </div>
+      } @else {
+        <div class="meal-plans-grid">
+          @for (plan of mealPlans; track plan.id) {
+            <mat-card class="meal-plan-card" (click)="viewMealPlan(plan.id)">
+              <mat-card-header>
+                <mat-card-title>{{ plan.name }}</mat-card-title>
+                <mat-card-subtitle>
+                  <span class="day-label">{{ getDayName(plan.dayOfWeek) }}</span>
+                  <span class="meals-count">{{ plan.items.length }} meals</span>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content>
+                @if (plan.description) {
+                  <p class="description">{{ plan.description }}</p>
+                }
+
+                <div class="meal-summary">
+                  <div class="nutrition-summary">
+                    <div class="nutrition-item">
+                      <span class="label">Total Calories:</span>
+                      <span class="value">{{ getTotalCalories(plan) }}</span>
+                    </div>
+                  </div>
+
+                  <div class="meals-preview">
+                    @for (item of plan.items.slice(0, 3); track item.mealId) {
+                      <div class="meal-preview-item">
+                        <img [src]="item.mealImage" [alt]="item.mealTitle">
+                        <span class="meal-type-badge">{{ item.mealType }}</span>
+                      </div>
+                    }
+                    @if (plan.items.length > 3) {
+                      <div class="more-meals">+{{ plan.items.length - 3 }} more</div>
+                    }
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions align="end">
+                <button mat-icon-button color="warn" (click)="deleteMealPlan(plan.id, $event)" matTooltip="Delete plan">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card-actions>
+
+              <mat-card-footer>
+                <div class="created-date">
+                  Created: {{ plan.createdAt | date:'medium' }}
+                </div>
+              </mat-card-footer>
+            </mat-card>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

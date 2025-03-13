@@ -1,1 +1,214 @@
-<p>meal-plan-detail works!</p>
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="meal-plan-detail-container mat-elevation-z2">
+    <!-- Back button and header -->
+    <div class="header-section">
+      <button mat-icon-button color="primary" (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
+      @if (mealPlan) {
+        <h2 class="mat-headline-4">{{ mealPlan.name }}</h2>
+
+        <button mat-icon-button color="warn" (click)="deleteMealPlan()" matTooltip="Delete meal plan">
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+
+    <!-- Error message -->
+    @if (error) {
+      <mat-error class="error-container">
+        {{ error }}
+      </mat-error>
+    }
+
+    <!-- Loading state -->
+    @if (isLoading) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <span>Loading meal plan...</span>
+      </div>
+    }
+
+    <!-- Meal plan content -->
+    @if (mealPlan && !isLoading) {
+      <div class="meal-plan-content">
+        <!-- Meal plan info -->
+        <div class="plan-info-section">
+          <div class="plan-meta">
+            <div class="meta-item">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ getDayName(mealPlan.dayOfWeek) }}</span>
+            </div>
+            <div class="meta-item">
+              <mat-icon>event</mat-icon>
+              <span>Created: {{ mealPlan.createdAt | date:'medium' }}</span>
+            </div>
+          </div>
+
+          @if (mealPlan.description) {
+            <div class="plan-description">
+              <p>{{ mealPlan.description }}</p>
+            </div>
+          }
+        </div>
+
+        <!-- Nutrition summary card -->
+        <div class="nutrition-summary-card mat-elevation-z1">
+          <h3>Nutrition Summary</h3>
+
+          <div class="nutrition-grid">
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ getTotalCalories() }}</div>
+              <div class="nutrition-label">Total Calories</div>
+            </div>
+
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ getTotalProtein() }}g</div>
+              <div class="nutrition-label">Protein</div>
+            </div>
+
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ getTotalCarbs() }}g</div>
+              <div class="nutrition-label">Carbs</div>
+            </div>
+
+            <div class="nutrition-item">
+              <div class="nutrition-value">{{ getTotalFats() }}g</div>
+              <div class="nutrition-label">Fats</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meals by type -->
+        <div class="meals-by-type">
+          <!-- Breakfast section -->
+          @if (breakfastItems.length > 0) {
+            <div class="meal-type-section">
+              <h3 class="meal-type-header">
+                <mat-icon>wb_sunny</mat-icon>
+                <span>Breakfast</span>
+              </h3>
+
+              <div class="meal-items-grid">
+                @for (item of breakfastItems; track item.mealId) {
+                  <mat-card class="meal-card">
+                    <div class="meal-image">
+                      <img [src]="item.mealImage" [alt]="item.mealTitle">
+                    </div>
+
+                    <div class="meal-details">
+                      <h4 class="meal-title">{{ item.mealTitle }}</h4>
+
+                      <div class="meal-nutrients">
+                        <div class="nutrient-badge">{{ item.calories }} cal</div>
+                        <div class="nutrient-badge">{{ item.protein }} protein</div>
+                        <div class="nutrient-badge">{{ item.carbs }} carbs</div>
+                        <div class="nutrient-badge">{{ item.fats }} fats</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Lunch section -->
+          @if (lunchItems.length > 0) {
+            <div class="meal-type-section">
+              <h3 class="meal-type-header">
+                <mat-icon>restaurant</mat-icon>
+                <span>Lunch</span>
+              </h3>
+
+              <div class="meal-items-grid">
+                @for (item of lunchItems; track item.mealId) {
+                  <mat-card class="meal-card">
+                    <div class="meal-image">
+                      <img [src]="item.mealImage" [alt]="item.mealTitle">
+                    </div>
+
+                    <div class="meal-details">
+                      <h4 class="meal-title">{{ item.mealTitle }}</h4>
+
+                      <div class="meal-nutrients">
+                        <div class="nutrient-badge">{{ item.calories }} cal</div>
+                        <div class="nutrient-badge">{{ item.protein }} protein</div>
+                        <div class="nutrient-badge">{{ item.carbs }} carbs</div>
+                        <div class="nutrient-badge">{{ item.fats }} fats</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Dinner section -->
+          @if (dinnerItems.length > 0) {
+            <div class="meal-type-section">
+              <h3 class="meal-type-header">
+                <mat-icon>nightlife</mat-icon>
+                <span>Dinner</span>
+              </h3>
+
+              <div class="meal-items-grid">
+                @for (item of dinnerItems; track item.mealId) {
+                  <mat-card class="meal-card">
+                    <div class="meal-image">
+                      <img [src]="item.mealImage" [alt]="item.mealTitle">
+                    </div>
+
+                    <div class="meal-details">
+                      <h4 class="meal-title">{{ item.mealTitle }}</h4>
+
+                      <div class="meal-nutrients">
+                        <div class="nutrient-badge">{{ item.calories }} cal</div>
+                        <div class="nutrient-badge">{{ item.protein }} protein</div>
+                        <div class="nutrient-badge">{{ item.carbs }} carbs</div>
+                        <div class="nutrient-badge">{{ item.fats }} fats</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Snack section -->
+          @if (snackItems.length > 0) {
+            <div class="meal-type-section">
+              <h3 class="meal-type-header">
+                <mat-icon>icecream</mat-icon>
+                <span>Snacks</span>
+              </h3>
+
+              <div class="meal-items-grid">
+                @for (item of snackItems; track item.mealId) {
+                  <mat-card class="meal-card">
+                    <div class="meal-image">
+                      <img [src]="item.mealImage" [alt]="item.mealTitle">
+                    </div>
+
+                    <div class="meal-details">
+                      <h4 class="meal-title">{{ item.mealTitle }}</h4>
+
+                      <div class="meal-nutrients">
+                        <div class="nutrient-badge">{{ item.calories }} cal</div>
+                        <div class="nutrient-badge">{{ item.protein }} protein</div>
+                        <div class="nutrient-badge">{{ item.carbs }} carbs</div>
+                        <div class="nutrient-badge">{{ item.fats }} fats</div>
+                      </div>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

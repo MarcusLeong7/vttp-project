@@ -25,6 +25,7 @@ public class MealPlanRepo {
         // Insert meal plan
         template.update(SQL_INSERT_MEAL_PLAN, mealPlan.getId(), mealPlan.getName(),
                 mealPlan.getDescription(), mealPlan.getUserId(),mealPlan.getDayOfWeek());
+
         // Insert all meal plan items into meal plan
         for (MealPlanItem item : mealPlan.getItems()) {
             item.setMealPlanId(mealPlan.getId());

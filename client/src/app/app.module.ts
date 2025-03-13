@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {jwtInterceptor} from './interceptors/jwt.interceptor';
 import {LoginComponent} from './components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -32,6 +32,7 @@ export const appRoutes: Routes = [
     , canActivate: [authguard]
   },
   // Features:
+  // Meals
   {path: 'meals/search', component: MealSearchComponent, canActivate: [authguard]},
   {path: 'meals/saved', component: SavedMealsComponent, canActivate: [authguard]},
   // Meal Plans
@@ -52,7 +53,8 @@ export const appRoutes: Routes = [
     MealSearchComponent,
     MealListComponent,
     SavedMealsComponent,
-    MealPlanListComponent
+    MealPlanListComponent,
+    MealPlanDetailComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,
