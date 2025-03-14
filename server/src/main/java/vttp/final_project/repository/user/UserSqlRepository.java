@@ -1,10 +1,10 @@
-package vttp.final_project.repository;
+package vttp.final_project.repository.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import vttp.final_project.models.User;
+import vttp.final_project.models.user.User;
 
 import static vttp.final_project.repository.queries.UserSql.*;
 

@@ -5,9 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import vttp.final_project.models.User;
-import vttp.final_project.repository.UserRepository;
-import vttp.final_project.repository.UserSqlRepository;
+import vttp.final_project.models.user.User;
+import vttp.final_project.repository.user.UserRepository;
+import vttp.final_project.repository.user.UserSqlRepository;
 
 @Service
 public class CustomDetailService implements UserDetailsService {

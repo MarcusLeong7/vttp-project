@@ -1,0 +1,87 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="workout-search-container mat-elevation-z2">
+    <h2 class="mat-headline-6">Search Workouts</h2>
+
+    @if (errorMessage) {
+      <mat-error class="error-container">
+        {{ errorMessage }}
+      </mat-error>
+    }
+
+    <form [formGroup]="searchForm" (submit)="search()">
+      <div class="search-criteria-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Force Type</mat-label>
+          <mat-select formControlName="force">
+            <mat-option [value]="">Any</mat-option>
+            <mat-option value="push">Push</mat-option>
+            <mat-option value="pull">Pull</mat-option>
+            <mat-option value="static">Static</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Experience Level</mat-label>
+          <mat-select formControlName="level">
+            <mat-option [value]="">Any</mat-option>
+            <mat-option value="beginner">Beginner</mat-option>
+            <mat-option value="intermediate">Intermediate</mat-option>
+            <mat-option value="advanced">Advanced</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Primary Muscle Group</mat-label>
+          <mat-select formControlName="primaryMuscle">
+            <mat-option [value]="">Any</mat-option>
+            <mat-option value="abdominals">Abdominals</mat-option>
+            <mat-option value="adductors">Adductors</mat-option>
+            <mat-option value="biceps">Biceps</mat-option>
+            <mat-option value="calves">Calves</mat-option>
+            <mat-option value="chest">Chest</mat-option>
+            <mat-option value="forearms">Forearms</mat-option>
+            <mat-option value="glutes">Glutes</mat-option>
+            <mat-option value="hamstrings">Hamstrings</mat-option>
+            <mat-option value="lats">Lats</mat-option>
+            <mat-option value="lower back">Lower Back</mat-option>
+            <mat-option value="middle back">Middle Back</mat-option>
+            <mat-option value="neck">Neck</mat-option>
+            <mat-option value="quadriceps">Quadriceps</mat-option>
+            <mat-option value="shoulders">Shoulders</mat-option>
+            <mat-option value="traps">Traps</mat-option>
+            <mat-option value="triceps">Triceps</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+          <mat-icon>search</mat-icon>
+          @if (isLoading) {
+            <span>Searching...</span>
+          } @else {
+            <span>Search</span>
+          }
+        </button>
+        <button mat-stroked-button color="warn" type="button" (click)="resetForm()">
+          <mat-icon>refresh</mat-icon>
+          Reset
+        </button>
+      </div>
+    </form>
+
+    @if (workouts.length > 0) {
+      <div class="results-container">
+        <app-workout-list [workouts]="workouts" (selectWorkouts)="selectWorkouts($event)"
+                          (saveWorkouts)="saveWorkouts($event)"></app-workout-list>
+      </div>
+    } @else if (!isLoading) {
+      <div class="no-results-container">
+        <mat-icon color="primary">info</mat-icon>
+        <p class="mat-body-1">No workouts found. Please adjust your search criteria.</p>
+      </div>
+    }
+  </div>
+</div>

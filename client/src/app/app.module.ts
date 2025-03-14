@@ -22,6 +22,8 @@ import {MealStore} from './stores/meal.store';
 import { MealPlanDetailComponent } from './components/meal-plan-detail/meal-plan-detail.component';
 import { MealPlanListComponent } from './components/meal-plan-list/meal-plan-list.component';
 import { MealPlanEditComponent } from './components/meal-plan-edit/meal-plan-edit.component';
+import { WorkoutSearchComponent } from './components/workout-search/workout-search.component';
+import { WorkoutListComponent } from './components/workout-list/workout-list.component';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -40,6 +42,9 @@ export const appRoutes: Routes = [
   {path: 'meal-plans', component: MealPlanListComponent, canActivate: [authguard]},
   {path: 'meal-plans/:id', component: MealPlanDetailComponent, canActivate: [authguard]},
   { path: 'meal-plans/:id/edit', component: MealPlanEditComponent, canActivate: [authguard] },
+  // Workout
+  {path: 'workouts/search', component: WorkoutSearchComponent, canActivate: [authguard]},
+  {path: 'workouts/saved', component: WorkoutListComponent, canActivate: [authguard]},
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -58,6 +63,8 @@ export const appRoutes: Routes = [
     MealPlanListComponent,
     MealPlanDetailComponent,
     MealPlanEditComponent,
+    WorkoutSearchComponent,
+    WorkoutListComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,

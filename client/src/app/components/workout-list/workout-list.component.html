@@ -1,0 +1,54 @@
+<div class="workout-list-container">
+  <h3>Available Workouts</h3>
+
+  <div class="workout-grid">
+    @for (workout of workouts; track workout.id) {
+      <div class="workout-card">
+        <div class="workout-header">
+          <h4 class="workout-title">{{ workout.name }}</h4>
+          <div class="workout-selection">
+            <input type="checkbox" [id]="'workout-' + workout.id" (change)="toggleWorkoutSelection(workout.id, $event)">
+            <label [for]="'workout-' + workout.id">Select</label>
+          </div>
+        </div>
+        <div class="workout-content">
+          <div class="workout-details">
+            <div class="detail-item">
+              <span class="label">Force:</span>
+              <span class="value">{{ workout.force | titlecase}}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Level:</span>
+              <span class="value">{{ workout.level | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Equipment:</span>
+              <span class="value">{{ workout.equipment | titlecase }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Muscles:</span>
+              <span class="value">{{ workout.primaryMuscles.join(', ') | titlecase}}</span>
+            </div>
+          </div>
+
+          <div class="workout-instructions">
+            <h5>Instructions:</h5>
+            <ol>
+              @for (instruction of workout.instructions; track $index) {
+                <li>{{ instruction }}</li>
+              }
+            </ol>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-workouts">No workouts available</div>
+    }
+  </div>
+
+  <div class="action-bar">
+    <button class="save-button" (click)="saveSelectedWorkouts()">
+      Save Selected Workouts
+    </button>
+  </div>
+</div>

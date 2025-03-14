@@ -1,4 +1,4 @@
-package vttp.final_project.models;
+package vttp.final_project.models.meal;
 
 
 public class MealPlanItem {

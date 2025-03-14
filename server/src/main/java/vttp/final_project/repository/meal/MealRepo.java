@@ -1,11 +1,10 @@
-package vttp.final_project.repository;
+package vttp.final_project.repository.meal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
-import vttp.final_project.models.Meal;
+import vttp.final_project.models.meal.Meal;
 
 import java.util.ArrayList;
 import java.util.List;

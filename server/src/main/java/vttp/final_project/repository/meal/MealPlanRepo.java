@@ -1,12 +1,12 @@
-package vttp.final_project.repository;
+package vttp.final_project.repository.meal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import vttp.final_project.models.MealPlan;
-import vttp.final_project.models.MealPlanItem;
+import vttp.final_project.models.meal.MealPlan;
+import vttp.final_project.models.meal.MealPlanItem;
 
 import java.util.ArrayList;
 import java.util.List;

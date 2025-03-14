@@ -1,4 +1,4 @@
-package vttp.final_project.models;
+package vttp.final_project.models.meal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
