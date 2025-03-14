@@ -39,11 +39,22 @@
           <span>Meal Plans</span>
         </a>
 
-        <a mat-button routerLink="/workouts/search" routerLinkActive="active-link">
+        <!-- Workout dropdown menu -->
+        <button mat-button [matMenuTriggerFor]="workoutsMenu">
           <mat-icon>fitness_center</mat-icon>
           <span>Workouts</span>
-        </a>
-
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #workoutsMenu="matMenu">
+          <a mat-menu-item routerLink="/workouts/search">
+            <mat-icon>search</mat-icon>
+            <span>Search Workouts</span>
+          </a>
+          <a mat-menu-item routerLink="/workouts/saved">
+            <mat-icon>bookmark</mat-icon>
+            <span>My Saved Workouts</span>
+          </a>
+        </mat-menu>
         <a mat-button routerLink="/schedule/calendar" routerLinkActive="active-link">
           <mat-icon>calendar_today</mat-icon>
           <span>Schedule</span>

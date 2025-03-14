@@ -21,8 +21,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-   /* @Autowired
-    private EmailService emailSvc;*/
+    @Autowired
+    private EmailService emailSvc;
 
     public void registerUser(String email, String rawPassword) {
         User user = new User();
@@ -36,7 +36,7 @@ public class UserService {
 
         // Send welcome email asynchronously
         System.out.println("Sending email to: " + email);
-        /*emailSvc.sendWelcomeEmail(email);*/
+        emailSvc.sendWelcomeEmail(email);
     }
 
     public boolean authenticate(String email, String rawPassword) {
