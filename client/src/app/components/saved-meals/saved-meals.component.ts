@@ -17,7 +17,6 @@ import {MealType} from '../../models/MealPlan/MealPlan';
 export class SavedMealsComponent implements OnInit {
 
   // Dependency Injections
-  private mealService = inject(MealService);
   private mealPlanService = inject(MealPlanService);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
