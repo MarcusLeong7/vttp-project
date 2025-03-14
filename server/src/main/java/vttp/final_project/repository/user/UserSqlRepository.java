@@ -6,6 +6,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import vttp.final_project.models.userModels.User;
 
+import java.util.Date;
+
 import static vttp.final_project.repository.queries.UserSql.*;
 
 
@@ -14,6 +16,15 @@ public class UserSqlRepository {
 
     @Autowired
     private JdbcTemplate template;
+
+    // Add Google token update method
+    public void updateGoogleTokens(String email, String accessToken, String refreshToken, Date expiryDate) {
+        // Define the SQL update statement
+        String sql = "UPDATE users SET google_access_token = ?, google_refresh_token = ?, google_token_expiry = ? WHERE email = ?";
+
+        // Execute the update
+        template.update(sql, accessToken, refreshToken, expiryDate, email);
+    }
 
     // Save user into mySQL database
     public void save(User user) {
@@ -27,6 +38,17 @@ public class UserSqlRepository {
             User user = new User();
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+
+            // Add Google token fields
+            user.setGoogleAccessToken(rs.getString("google_access_token"));
+            user.setGoogleRefreshToken(rs.getString("google_refresh_token"));
+
+            // Handle date conversion for token expiry
+            java.sql.Timestamp expiryTimestamp = rs.getTimestamp("google_token_expiry");
+            if (expiryTimestamp != null) {
+                user.setGoogleTokenExpiry(new Date(expiryTimestamp.getTime()));
+            }
+
             return user;
         }
         return null;
