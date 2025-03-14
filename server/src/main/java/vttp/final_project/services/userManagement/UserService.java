@@ -109,14 +109,6 @@ public class UserService {
             // Update user with Google tokens
             userSqlRepo.updateGoogleTokens(email, accessToken, refreshToken, expiryDate);
 
-            // Optionally update Redis if you want to keep it in sync
-            User user = userRepo.findByEmail(email);
-            if (user != null) {
-                user.setGoogleAccessToken(accessToken);
-                user.setGoogleRefreshToken(refreshToken);
-                user.setGoogleTokenExpiry(expiryDate);
-                userRepo.save(user);
-            }
         } catch (Exception e) {
             throw new RuntimeException("Failed to process Google authentication", e);
         }

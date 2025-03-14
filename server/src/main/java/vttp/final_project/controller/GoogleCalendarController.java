@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vttp.final_project.models.GoogleAuthRequest;
 import vttp.final_project.models.mealModels.MealPlan;
 import vttp.final_project.services.GoogleCalendarService;
 import vttp.final_project.services.mealManagement.MealPlanService;
@@ -26,13 +27,13 @@ public class GoogleCalendarController {
     private UserService userSvc;
 
     @PostMapping("/connect")
-    public ResponseEntity<String> connectToGoogle(@RequestBody GoogleAuthRequest request, Principal principal) {
+    public ResponseEntity<String> connectToGoogle(@RequestBody GoogleAuthRequest req, Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         try {
-            userSvc.saveGoogleAuthToken(principal.getName(), request.getCode());
+            userSvc.saveGoogleAuthToken(principal.getName(), req.getCode());
 
             return ResponseEntity.ok("{\"status\":\"success\",\"message\":\"Connected to Google Calendar\"}");
         } catch (Exception e) {
