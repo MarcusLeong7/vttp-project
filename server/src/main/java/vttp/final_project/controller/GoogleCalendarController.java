@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import vttp.final_project.models.mealModels.MealPlan;
 import vttp.final_project.services.GoogleCalendarService;
 import vttp.final_project.services.mealManagement.MealPlanService;
-import vttp.final_project.services.mealManagement.MealService;
 import vttp.final_project.services.userManagement.UserService;
 
 import java.security.Principal;
