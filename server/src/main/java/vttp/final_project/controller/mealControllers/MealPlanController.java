@@ -1,4 +1,4 @@
-package vttp.final_project.controller.mealManagement;
+package vttp.final_project.controller.mealControllers;
 
 import jakarta.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vttp.final_project.models.meal.MealPlan;
-import vttp.final_project.models.meal.MealPlanItem;
-import vttp.final_project.services.MealManagement.MealPlanService;
+import vttp.final_project.models.mealModels.MealPlan;
+import vttp.final_project.models.mealModels.MealPlanItem;
+import vttp.final_project.services.mealManagement.MealPlanService;
 
 import java.security.Principal;
 import java.util.List;

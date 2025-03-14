@@ -1,4 +1,4 @@
-package vttp.final_project.services.MealManagement;
+package vttp.final_project.services.mealManagement;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import vttp.final_project.models.meal.Meal;
+import vttp.final_project.models.mealModels.Meal;
 import vttp.final_project.repository.meal.MealRepo;
 
 import java.io.StringReader;

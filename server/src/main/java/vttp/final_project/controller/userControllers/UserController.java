@@ -1,4 +1,4 @@
-package vttp.final_project.controller.userManagement;
+package vttp.final_project.controller.userControllers;
 
 
 import jakarta.json.Json;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import vttp.final_project.models.user.User;
+import vttp.final_project.models.userModels.User;
 
 import static vttp.final_project.repository.queries.UserSql.*;
 

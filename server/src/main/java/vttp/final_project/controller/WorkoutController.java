@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vttp.final_project.models.Workout;
-import vttp.final_project.services.WorkoutService;
+import vttp.final_project.services.workoutManagement.WorkoutService;
 
 import java.security.Principal;
 import java.util.List;

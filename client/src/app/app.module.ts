@@ -24,16 +24,15 @@ import { MealPlanListComponent } from './components/meal-plan-list/meal-plan-lis
 import { MealPlanEditComponent } from './components/meal-plan-edit/meal-plan-edit.component';
 import { WorkoutSearchComponent } from './components/workout-search/workout-search.component';
 import { WorkoutListComponent } from './components/workout-list/workout-list.component';
+import {WorkoutService} from './services/workout.service';
+import { SavedWorkoutsComponent } from './components/saved-workouts/saved-workouts.component';
 
 export const appRoutes: Routes = [
   // Auth routes
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   // Home/Dashboard Component
-  {
-    path: 'home', component: HomeComponent
-    , canActivate: [authguard]
-  },
+  {path: 'home', component: HomeComponent, canActivate: [authguard]},
   // Features:
   // Meals
   {path: 'meals/search', component: MealSearchComponent, canActivate: [authguard]},
@@ -44,7 +43,7 @@ export const appRoutes: Routes = [
   { path: 'meal-plans/:id/edit', component: MealPlanEditComponent, canActivate: [authguard] },
   // Workout
   {path: 'workouts/search', component: WorkoutSearchComponent, canActivate: [authguard]},
-  {path: 'workouts/saved', component: WorkoutListComponent, canActivate: [authguard]},
+  {path: 'workouts/saved', component: SavedWorkoutsComponent, canActivate: [authguard]},
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -65,12 +64,13 @@ export const appRoutes: Routes = [
     MealPlanEditComponent,
     WorkoutSearchComponent,
     WorkoutListComponent,
+    SavedWorkoutsComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
-    AuthService, MealService,MealPlanService,MealStore],
+    AuthService, MealService,MealPlanService,WorkoutService,MealStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {

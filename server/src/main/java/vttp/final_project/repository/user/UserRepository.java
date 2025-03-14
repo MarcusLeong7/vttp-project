@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import vttp.final_project.models.user.User;
+import vttp.final_project.models.userModels.User;
 
 @Repository
 public class UserRepository {

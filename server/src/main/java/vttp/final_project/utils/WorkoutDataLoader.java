@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import vttp.final_project.models.Workout;
-import vttp.final_project.services.WorkoutService;
+import vttp.final_project.services.workoutManagement.WorkoutService;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Component

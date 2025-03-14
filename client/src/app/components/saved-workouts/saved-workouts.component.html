@@ -1,0 +1,81 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <div class="saved-workouts-container mat-elevation-z2">
+    <h2 class="mat-headline-6">My Saved Workouts</h2>
+
+    <!-- Error message -->
+    @if (errorMessage) {
+      <mat-error class="error-container">
+        {{ errorMessage }}
+      </mat-error>
+    }
+
+    <!-- Loading state -->
+    @if (isLoading) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <span>Loading your workouts...</span>
+      </div>
+    } @else {
+      <!-- No workouts state -->
+      @if (savedWorkouts.length === 0) {
+        <div class="no-workouts-container">
+          <mat-icon color="primary">fitness_center</mat-icon>
+          <p class="mat-body-1">You haven't saved any workouts yet. Browse the workout catalog to find and save workouts.</p>
+          <button mat-raised-button color="primary" routerLink="/workouts/search">Find Workouts</button>
+        </div>
+      } @else {
+        <div class="workouts-grid">
+          @for (workout of savedWorkouts; track workout.id) {
+            <mat-card class="workout-card">
+              <mat-card-header>
+                <mat-card-title>{{ workout.name }}</mat-card-title>
+                <mat-card-subtitle>{{ workout.category | titlecase }}</mat-card-subtitle>
+                <button mat-icon-button color="warn" class="delete-button"
+                        (click)="deleteWorkout(workout.id, $event)"
+                        matTooltip="Delete workout">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card-header>
+
+              <mat-card-content>
+                <div class="workout-details">
+                  <div class="detail-item">
+                    <span class="label">Force:</span>
+                    <span class="value">{{ workout.force | titlecase }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Level:</span>
+                    <span class="value">{{ workout.level | titlecase }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Equipment:</span>
+                    <span class="value">{{ workout.equipment | titlecase }}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Muscles:</span>
+                    <span class="value">{{ workout.primaryMuscles.join(', ') | titlecase }}</span>
+                  </div>
+                </div>
+
+                <mat-expansion-panel class="instructions-panel">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Instructions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <ol class="instructions-list">
+                    @for (instruction of workout.instructions; track $index) {
+                      <li>{{ instruction }}</li>
+                    }
+                  </ol>
+                </mat-expansion-panel>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

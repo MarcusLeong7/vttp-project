@@ -1,10 +1,10 @@
-package vttp.final_project.services.MealManagement;
+package vttp.final_project.services.mealManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vttp.final_project.models.meal.Meal;
-import vttp.final_project.models.meal.MealPlan;
-import vttp.final_project.models.meal.MealPlanItem;
+import vttp.final_project.models.mealModels.Meal;
+import vttp.final_project.models.mealModels.MealPlan;
+import vttp.final_project.models.mealModels.MealPlanItem;
 import vttp.final_project.repository.meal.MealPlanRepo;
 
 import java.util.List;

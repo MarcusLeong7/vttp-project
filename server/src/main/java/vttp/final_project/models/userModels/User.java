@@ -1,4 +1,4 @@
-package vttp.final_project.models.user;
+package vttp.final_project.models.userModels;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

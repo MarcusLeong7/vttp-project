@@ -1,9 +1,9 @@
-package vttp.final_project.services;
+package vttp.final_project.services.workoutManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vttp.final_project.models.Workout;
-import vttp.final_project.repository.WorkoutRepository;
+import vttp.final_project.repository.workout.WorkoutRepository;
 
 import java.util.List;
 

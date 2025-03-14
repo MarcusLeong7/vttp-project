@@ -1,4 +1,4 @@
-package vttp.final_project.repository;
+package vttp.final_project.repository.workout;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import vttp.final_project.models.meal.MealPlan;
-import vttp.final_project.models.meal.MealPlanItem;
+import vttp.final_project.models.mealModels.MealPlan;
+import vttp.final_project.models.mealModels.MealPlanItem;
 
 import java.util.ArrayList;
 import java.util.List;
