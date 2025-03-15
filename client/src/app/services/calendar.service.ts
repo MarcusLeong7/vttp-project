@@ -10,7 +10,7 @@ export class CalendarService {
   // Dependency Injection
   private http = inject(HttpClient);
 
-  // Start the Google OAuth flow
+// Start the Google OAuth flow
   initiateGoogleAuth(): void {
     // Use the client ID you registered in Google Cloud Console
     const clientId = 'YOUR_GOOGLE_CLIENT_ID';

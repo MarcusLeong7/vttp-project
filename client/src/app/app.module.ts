@@ -29,6 +29,7 @@ import { SavedWorkoutsComponent } from './components/saved-workouts/saved-workou
 import {CalendarService} from './services/calendar.service';
 import { CalendarCallbackComponent } from './components/calendar-callback/calendar-callback.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import {SafeResourceUrlPipe} from './pipes/safe-resoure-url.pipe';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -49,6 +50,7 @@ export const appRoutes: Routes = [
   {path: 'workouts/saved', component: SavedWorkoutsComponent, canActivate: [authguard]},
   // Google Calendar
   { path: 'calendar/callback', component: CalendarCallbackComponent },
+  { path: 'schedule', component: ScheduleComponent, canActivate: [authguard] },
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -74,7 +76,7 @@ export const appRoutes: Routes = [
     ScheduleComponent,
   ],
   imports: [
-    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,
+    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule, SafeResourceUrlPipe,
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
     AuthService, MealService,MealPlanService,WorkoutService,CalendarService,MealStore],

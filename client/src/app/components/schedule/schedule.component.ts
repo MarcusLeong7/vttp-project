@@ -16,11 +16,10 @@ export class ScheduleComponent {
   isLoading = false;
   isConnectedToGoogle = false;
   errorMessage = '';
-
+  userEmail = '';
 
   ngOnInit(): void {
     this.checkGoogleConnection();
-    this.loadCalendarEvents();
   }
 
   checkGoogleConnection(): void {
@@ -28,26 +27,11 @@ export class ScheduleComponent {
     this.calendarSvc.checkGoogleConnection().subscribe({
       next: (response) => {
         this.isConnectedToGoogle = response.connected;
+        this.userEmail = response.email || '';
         this.isLoading = false;
       },
       error: (err) => {
         this.isConnectedToGoogle = false;
-        this.isLoading = false;
-      }
-    });
-  }
-
-  loadCalendarEvents(): void {
-    if (!this.isConnectedToGoogle) return;
-
-    this.isLoading = true;
-    this.calendarSvc.getCalendarEvents().subscribe({
-      next: (events) => {
-        this.calendarEvents = events;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load calendar events. Please try again later.';
         this.isLoading = false;
       }
     });
