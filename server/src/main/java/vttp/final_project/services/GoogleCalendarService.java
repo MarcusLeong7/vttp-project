@@ -24,6 +24,7 @@ import vttp.final_project.repository.user.UserSqlRepository;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -78,15 +79,20 @@ public class GoogleCalendarService {
                     .setDescription(buildEventDescription(mealPlan));
             System.out.println("Created event object: " + event.getSummary());
 
-            // Set event time based on meal plan day
-            DateTime startDateTime = calculateEventDateTime(mealPlan.getDayOfWeek());
-            event.setStart(new EventDateTime().setDateTime(startDateTime));
-            System.out.println("Set event start time: " + startDateTime.toString());
+            // Calculate the event date for a full day event
+            LocalDate eventDate = calculateEventDate(mealPlan.getDayOfWeek());
 
-            // Calculate end time (1 hour later)
-            DateTime endDateTime = new DateTime(startDateTime.getValue() + 3600000);
-            event.setEnd(new EventDateTime().setDateTime(endDateTime));
-            System.out.println("Set event end time: " + endDateTime.toString());
+            // For a full-day event, we use dates without times
+            EventDateTime startDate = new EventDateTime()
+                    .setDate(new DateTime(true, eventDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), 0));
+            event.setStart(startDate);
+            System.out.println("Set event start date: " + startDate.getDate());
+
+            // For a full-day event, the end date should be the next day
+            EventDateTime endDate = new EventDateTime()
+                    .setDate(new DateTime(true, eventDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), 0));
+            event.setEnd(endDate);
+            System.out.println("Set event end date: " + endDate.getDate());
 
             // Insert event
             System.out.println("Attempting to insert event to primary calendar");
@@ -100,6 +106,7 @@ public class GoogleCalendarService {
             throw new RuntimeException("Failed to add meal plan to calendar: " + e.getMessage(), e);
         }
     }
+
 
     private String buildEventDescription(MealPlan mealPlan) {
         // Build a detailed description of the meal plan
@@ -121,21 +128,32 @@ public class GoogleCalendarService {
         return description.toString();
     }
 
-    private DateTime calculateEventDateTime(Integer dayOfWeek) {
-        // Get the current date/time
-        LocalDateTime now = LocalDateTime.now();
+    private LocalDate calculateEventDate(Integer dayOfWeek) {
+        // Get the current date
+        LocalDate today = LocalDate.now();
 
         // If dayOfWeek is specified, calculate the next occurrence of that day
         if (dayOfWeek != null) {
-            int daysUntilNextOccurrence = (dayOfWeek - now.getDayOfWeek().getValue() + 7) % 7;
-            now = now.plusDays(daysUntilNextOccurrence);
+            // Java's DayOfWeek is 1-based (1=Monday, 7=Sunday)
+            // But your dayOfWeek might be 0-based (0=Sunday, 6=Saturday)
+            // Convert if needed
+            int targetDayOfWeek = dayOfWeek;
+            if (dayOfWeek == 0) {
+                targetDayOfWeek = 7; // Convert Sunday from 0 to 7 for calculation
+            }
+
+            int currentDayOfWeek = today.getDayOfWeek().getValue(); // 1-7 (Monday-Sunday)
+            int daysToAdd = (targetDayOfWeek - currentDayOfWeek + 7) % 7;
+
+            // If today is the target day, push to next week
+            if (daysToAdd == 0) {
+                daysToAdd = 7;
+            }
+            return today.plusDays(daysToAdd);
+        } else {
+            // If no day specified, use tomorrow
+            return today.plusDays(1);
         }
-
-        // Set time to noon
-        now = now.withHour(12).withMinute(0).withSecond(0).withNano(0);
-
-        // Convert to DateTime
-        return new DateTime(now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     private Credential getCredentials(String refreshToken) {
