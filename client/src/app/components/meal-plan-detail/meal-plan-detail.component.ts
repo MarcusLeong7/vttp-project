@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {MealPlanService} from '../../services/meal.plan.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {CalendarService} from '../../services/calendar.service';
 
 @Component({
   selector: 'app-meal-plan-detail',
@@ -16,6 +17,7 @@ export class MealPlanDetailComponent {
   private activatedRoute = inject(ActivatedRoute);
   private snackBar = inject(MatSnackBar);
   private mealPlanService = inject(MealPlanService);
+  private calendarService = inject(CalendarService);
 
   // Component properties
   mealPlan: any = null;
@@ -156,6 +158,38 @@ export class MealPlanDetailComponent {
   // Go back to meal plans list
   goBack(): void {
     this.router.navigate(['/meal-plans']);
+  }
+
+
+  // Add to google calendar
+  addToCalendar(): void {
+    this.isLoading = true;
+
+    this.calendarService.addMealPlanToCalendar(this.mealPlan.id)
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.snackBar.open('Meal plan added to your Google Calendar', 'Close', {
+            duration: 3000
+          });
+        },
+        error: (err) => {
+          this.isLoading = false;
+
+          // If the user hasn't connected their Google account yet
+          if (err.status === 401 || err.status === 403) {
+            this.snackBar.open('You need to connect to Google Calendar first', 'Connect', {
+              duration: 5000
+            }).onAction().subscribe(() => {
+              this.calendarService.initiateGoogleAuth();
+            });
+          } else {
+            this.snackBar.open('Failed to add to calendar. Please try again.', 'Close', {
+              duration: 3000
+            });
+          }
+        }
+      });
   }
 
 }

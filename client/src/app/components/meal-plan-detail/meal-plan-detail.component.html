@@ -11,6 +11,11 @@
       @if (mealPlan) {
         <h2 class="mat-headline-4">{{ mealPlan.name }}</h2>
         <div class="action-buttons">
+          <!-- Add to google calendar button-->
+          <button mat-raised-button color="accent" (click)="addToCalendar()" [disabled]="isLoading">
+            <mat-icon>event</mat-icon>
+            Add to Google Calendar
+          </button>
           <!-- Edit Button-->
           <button mat-icon-button color="primary" (click)="editMealPlan()" matTooltip="Edit meal plan">
             <mat-icon>edit</mat-icon>

@@ -1,0 +1,52 @@
+/* src/app/components/schedule/schedule.component.css */
+.schedule-container {
+  max-width: 1200px;
+  margin: 84px auto 30px;
+  padding: 20px;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.schedule-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.connect-google-section {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.connect-google-section p {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.loading-container span, .error-container p {
+  margin-top: 16px;
+  color: #666;
+}
+
+.calendar-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}

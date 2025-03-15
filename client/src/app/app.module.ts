@@ -26,6 +26,9 @@ import { WorkoutSearchComponent } from './components/workout-search/workout-sear
 import { WorkoutListComponent } from './components/workout-list/workout-list.component';
 import {WorkoutService} from './services/workout.service';
 import { SavedWorkoutsComponent } from './components/saved-workouts/saved-workouts.component';
+import {CalendarService} from './services/calendar.service';
+import { CalendarCallbackComponent } from './components/calendar-callback/calendar-callback.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -44,6 +47,8 @@ export const appRoutes: Routes = [
   // Workout
   {path: 'workouts/search', component: WorkoutSearchComponent, canActivate: [authguard]},
   {path: 'workouts/saved', component: SavedWorkoutsComponent, canActivate: [authguard]},
+  // Google Calendar
+  { path: 'calendar/callback', component: CalendarCallbackComponent },
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -65,12 +70,14 @@ export const appRoutes: Routes = [
     WorkoutSearchComponent,
     WorkoutListComponent,
     SavedWorkoutsComponent,
+    CalendarCallbackComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule,
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
-    AuthService, MealService,MealPlanService,WorkoutService,MealStore],
+    AuthService, MealService,MealPlanService,WorkoutService,CalendarService,MealStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {

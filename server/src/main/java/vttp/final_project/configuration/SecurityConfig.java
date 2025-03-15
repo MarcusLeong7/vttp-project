@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/meals/**").authenticated()
                         .requestMatchers("/api/mealplans/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
+                        .requestMatchers("/api/calendar/**").authenticated()
                         .anyRequest().authenticated()
                 )
 

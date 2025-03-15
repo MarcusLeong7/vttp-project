@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<div class="schedule-container">
+  <div class="schedule-header">
+    <h2>Your Schedule</h2>
+
+    @if (!isConnectedToGoogle) {
+      <div class="connect-google-section">
+        <p>Connect your Google Calendar to view and manage your meal plans and workouts in one place.</p>
+        <button mat-raised-button color="primary" (click)="connectToGoogle()">
+          <mat-icon>account_circle</mat-icon>
+          Connect Google Calendar
+        </button>
+      </div>
+    }
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Loading your schedule...</span>
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ errorMessage }}</p>
+    </div>
+  } @else if (isConnectedToGoogle) {
+    <div class="calendar-container">
+      <!-- Embed Google Calendar using an iframe -->
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src={{userEmail}}&ctz=local"
+        style="border: 0"
+        width="100%"
+        height="600"
+        frameborder="0"
+        scrolling="no">
+      </iframe>
+    </div>
+  }
+</div>
