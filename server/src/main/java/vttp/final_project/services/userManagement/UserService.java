@@ -104,18 +104,36 @@ public class UserService {
             // Extract tokens and expiry
             String accessToken = tokenResponse.getAccessToken();
             String refreshToken = tokenResponse.getRefreshToken();
-            Date expiryDate = new Date(System.currentTimeMillis() + tokenResponse.getExpiresInSeconds() * 1000);
+
+            // Important! Log to see what's being received
+            System.out.println("Access token received: " + (accessToken != null));
+            System.out.println("Refresh token received: " + (refreshToken != null));
+
+            if (refreshToken == null) {
+                System.out.println("WARNING: No refresh token received. User might have already granted access before.");
+                // You may need to handle the case where no refresh token is returned
+            }
+
+            Date expiryDate = new Date(System.currentTimeMillis() + (tokenResponse.getExpiresInSeconds() * 1000));
 
             // Update user with Google tokens
             userSqlRepo.updateGoogleTokens(email, accessToken, refreshToken, expiryDate);
 
+            // Verify the update was successful
+            User updatedUser = userSqlRepo.findByEmail(email);
+            System.out.println("After update - User has refresh token: " + (updatedUser.getGoogleRefreshToken() != null));
+
         } catch (Exception e) {
+            System.err.println("Error saving Google auth token: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Failed to process Google authentication", e);
         }
     }
 
     private TokenResponse exchangeAuthCodeForTokens(String authCode) {
         try {
+            System.out.println("Exchanging auth code for tokens");
+
             // Create GoogleTokenResponse from authCode
             GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
                     new NetHttpTransport(),
@@ -124,11 +142,14 @@ public class UserService {
                     clientId,
                     clientSecret,
                     authCode,
-                    redirectUri)  // Set this to your redirect URI
+                    redirectUri)  // Must match exactly what's in Google Cloud Console
                     .execute();
 
+            System.out.println("Token exchange completed");
             return tokenResponse;
         } catch (IOException e) {
+            System.err.println("Failed to exchange auth code for tokens: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Failed to exchange auth code for tokens", e);
         }
     }

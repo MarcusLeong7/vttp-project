@@ -19,7 +19,17 @@ public class UserSqlRepository {
 
     // Add Google token update method
     public void updateGoogleTokens(String email, String accessToken, String refreshToken, Date expiryDate) {
-        template.update(SQL_UPDATE_GOOGLE_TOKEN, email,accessToken, refreshToken, expiryDate);
+        System.out.println("Updating Google tokens for user: " + email);
+        System.out.println("Access token: " + (accessToken != null ? "present" : "null"));
+        System.out.println("Refresh token: " + (refreshToken != null ? "present" : "null"));
+
+        // Execute the update
+        int rowsUpdated = template.update(SQL_UPDATE_GOOGLE_TOKEN, accessToken, refreshToken, expiryDate, email);
+        System.out.println("Rows updated: " + rowsUpdated);
+
+        if (rowsUpdated == 0) {
+            System.err.println("Warning: No rows updated when saving Google tokens");
+        }
     }
 
     // Save user into mySQL database

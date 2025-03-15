@@ -13,34 +13,55 @@
       </button>
     </div>
   }
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Loading your schedule...</span>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ errorMessage }}</p>
+    </div>
+  }
+
+  @if (isConnectedToGoogle && !isLoading) {
+    <div class="calendar-container">
+      <!-- Embed Google Calendar using an iframe -->
+      <iframe
+        [src]="calendarEmbedUrl | safeResourceUrl"
+        style="border: 0"
+        width="100%"
+        height="600"
+        frameborder="0"
+        scrolling="no">
+      </iframe>
+
+      <!-- Display fetched events -->
+      @if (calendarEvents && calendarEvents.length > 0) {
+        <div class="events-list">
+          <h3>Upcoming Events</h3>
+          <mat-list>
+            @for (event of calendarEvents; track event.id) {
+              <mat-list-item>
+                <div class="event-item">
+                  <h4>{{ event.summary }}</h4>
+                  <p>{{ event.start | date:'medium' }} - {{ event.end | date:'medium' }}</p>
+                  <a [href]="event.htmlLink" target="_blank" mat-button color="primary">View in Calendar</a>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            }
+          </mat-list>
+        </div>
+      } @else {
+        <div class="no-events">
+          <p>No upcoming events found in your calendar.</p>
+        </div>
+      }
+    </div>
+  }
 </div>
-
-
-@if (isLoading) {
-  <div class="loading-container">
-    <mat-spinner diameter="40"></mat-spinner>
-    <span>Loading your schedule...</span>
-  </div>
-}
-
-@if (errorMessage) {
-  <div class="error-container">
-    <mat-icon color="warn">error</mat-icon>
-    <p>{{ errorMessage }}</p>
-  </div>
-}
-
-@if (isConnectedToGoogle && !isLoading) {
-  <div class="calendar-container">
-    <!-- Embed Google Calendar using an iframe -->
-    <iframe
-      [src]="'https://calendar.google.com/calendar/embed?src=' + userEmail + '&ctz=local' | safeResourceUrl"
-      style="border: 0"
-      width="100%"
-      height="600"
-      frameborder="0"
-      scrolling="no">
-    </iframe>
-  </div>
-}
-

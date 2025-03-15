@@ -167,14 +167,20 @@ export class MealPlanDetailComponent {
 
     this.calendarService.addMealPlanToCalendar(this.mealPlan.id)
       .subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Calendar success response:', response);
           this.isLoading = false;
           this.snackBar.open('Meal plan added to your Google Calendar', 'Close', {
             duration: 3000
           });
         },
         error: (err) => {
+          console.error('Calendar error response:', err);
           this.isLoading = false;
+
+          if (err.error && err.error.message) {
+            console.error('Server error message:', err.error.message);
+          }
 
           // If the user hasn't connected their Google account yet
           if (err.status === 401 || err.status === 403) {

@@ -67,25 +67,37 @@ public class GoogleCalendarService {
 
     public Event addMealPlanToCalendar(String userId, MealPlan mealPlan) {
         try {
+            System.out.println("Starting to add meal plan to calendar for user: " + userId);
+
             Calendar service = getCalendarService(userId);
+            System.out.println("Successfully obtained Calendar service");
 
             // Create event
             Event event = new Event()
                     .setSummary("NutriSense Meal Plan: " + mealPlan.getName())
                     .setDescription(buildEventDescription(mealPlan));
+            System.out.println("Created event object: " + event.getSummary());
 
             // Set event time based on meal plan day
             DateTime startDateTime = calculateEventDateTime(mealPlan.getDayOfWeek());
             event.setStart(new EventDateTime().setDateTime(startDateTime));
+            System.out.println("Set event start time: " + startDateTime.toString());
 
             // Calculate end time (1 hour later)
-            DateTime endDateTime = new DateTime(startDateTime.getValue() + 3600000); // Add 1 hour in milliseconds
+            DateTime endDateTime = new DateTime(startDateTime.getValue() + 3600000);
             event.setEnd(new EventDateTime().setDateTime(endDateTime));
+            System.out.println("Set event end time: " + endDateTime.toString());
 
             // Insert event
-            return service.events().insert("primary", event).execute();
-        } catch (IOException | GeneralSecurityException e) {
-            throw new RuntimeException("Failed to add meal plan to calendar", e);
+            System.out.println("Attempting to insert event to primary calendar");
+            Event createdEvent = service.events().insert("primary", event).execute();
+            System.out.println("Successfully created event with ID: " + createdEvent.getId());
+
+            return createdEvent;
+        } catch (Exception e) {
+            System.err.println("Error adding meal plan to calendar: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to add meal plan to calendar: " + e.getMessage(), e);
         }
     }
 
