@@ -35,7 +35,7 @@ public class UserSqlRepository {
     // Save user into mySQL database
     public void save(User user) {
 
-        template.update(SQL_SAVE_USER, user.getEmail(), user.getPassword(), user.getGoogleAccessToken(),
+        template.update(SQL_SAVE_USER, user.getEmail(), user.getPassword(), user.isPremium(),user.getGoogleAccessToken(),
                 user.getGoogleRefreshToken(), user.getGoogleTokenExpiry());
     }
 
