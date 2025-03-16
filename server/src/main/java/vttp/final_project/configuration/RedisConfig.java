@@ -13,8 +13,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.util.logging.Logger;
 
 @Configuration
-public class AppConfig {
-    private static final Logger logger = Logger.getLogger(AppConfig.class.getName());
+public class RedisConfig {
+    private static final Logger logger = Logger.getLogger(RedisConfig.class.getName());
 
     // Inject all the application properties from application.properties
     // Get all the redis configuration into the class
