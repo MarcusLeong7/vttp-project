@@ -1,14 +1,25 @@
 package vttp.final_project.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import vttp.final_project.repository.user.UserSqlRepository;
+import vttp.final_project.services.StripeService;
+
+import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payment")
 public class StripeController {
 
-   /* @Autowired
+    @Autowired
     private StripeService stripeService;
 
     @Autowired
@@ -80,6 +91,6 @@ public class StripeController {
                 .build();
 
         return ResponseEntity.ok(response.toString());
-    }*/
+    }
 
 }

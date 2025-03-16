@@ -46,6 +46,8 @@ public class UserService {
         // Encode password before saving
         user.setPassword(passwordEncoder.encode(rawPassword)); // Hash the password
 
+        // Set premium status to false for new users
+        user.setPremium(false);
         // Initialize Google fields as null for new users
         user.setGoogleAccessToken(null);
         user.setGoogleRefreshToken(null);

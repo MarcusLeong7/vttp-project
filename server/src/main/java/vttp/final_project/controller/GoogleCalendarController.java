@@ -63,10 +63,21 @@ public class GoogleCalendarController {
         }
 
         try {
-            // Check if user has Google tokens
+            // Check if user is premium
             User user = userSqlRepo.findByEmail(principal.getName());
             System.out.println("User: " + user.getEmail() + ", Has refresh token: " + (user.getGoogleRefreshToken() != null));
 
+            // Premium check
+            if (!user.isPremium()) {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Google Calendar integration is a premium feature. Please upgrade to continue.")
+                        .add("requiresUpgrade", true)
+                        .build();
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error.toString());
+            }
+
+            // Google token check
             if (user.getGoogleRefreshToken() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("{\"status\":\"error\",\"message\":\"User not connected to Google Calendar\"}");

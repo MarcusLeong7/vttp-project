@@ -10,6 +10,7 @@ public class User {
 
     private String email;
     private String password;
+    private Boolean isPremium;
 
     private String googleAccessToken;
     private String googleRefreshToken;
@@ -23,14 +24,22 @@ public class User {
         this.password = password;
     }
 
-    public User(String email, String password,
-                String googleAccessToken, String googleRefreshToken,
-                Date googleTokenExpiry) {
+    public User(String email, String password, Boolean isPremium,
+                String googleAccessToken, String googleRefreshToken, Date googleTokenExpiry) {
         this.email = email;
         this.password = password;
+        this.isPremium = isPremium;
         this.googleAccessToken = googleAccessToken;
         this.googleRefreshToken = googleRefreshToken;
         this.googleTokenExpiry = googleTokenExpiry;
+    }
+
+    public Boolean isPremium() {
+        return isPremium;
+    }
+
+    public void setPremium(Boolean premium) {
+        isPremium = premium;
     }
 
     public String getGoogleAccessToken() {

@@ -91,6 +91,17 @@ public class MealPlanController {
         }
         try {
             String email = principal.getName();
+
+            // Check if user can create more meal plans
+            if (!mealPlanSvc.canCreateMoreMealPlans(email)) {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Free users are limited to 3 meal plans. Upgrade to premium for unlimited meal plans.")
+                        .add("requiresUpgrade", true)
+                        .build();
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error.toString());
+            }
+
             String name = (String) payload.get("name");
             String description = (String) payload.get("description");
             Integer dayOfWeek = null;

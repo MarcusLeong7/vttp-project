@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import vttp.final_project.models.mealModels.Meal;
 import vttp.final_project.models.mealModels.MealPlan;
 import vttp.final_project.models.mealModels.MealPlanItem;
+import vttp.final_project.models.userModels.User;
 import vttp.final_project.repository.meal.MealPlanRepo;
+import vttp.final_project.repository.user.UserSqlRepository;
 
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class MealPlanService {
 
     @Autowired
     private MealPlanRepo mealPlanRepo;
+
+    @Autowired
+    private UserSqlRepository userSqlRepo;
 
     /* Create new meal plan */
     public MealPlan createMealPlan(MealPlan mealPlan, String email) {
@@ -41,6 +46,19 @@ public class MealPlanService {
     /* Delete a meal plan*/
     public boolean deleteMealPlan(String id, String email) {
         return mealPlanRepo.deleteMealPlan(id, email);
+    }
+
+    /* For premium feature*/
+    public boolean canCreateMoreMealPlans(String email) {
+        User user = userSqlRepo.findByEmail(email);
+
+        if (user.isPremium()) {
+            return true; // Premium users can create unlimited meal plans
+        }
+
+        // Free users are limited to 3 meal plans
+        int mealPlanCount = mealPlanRepo.countMealPlansByUser(email);
+        return mealPlanCount < 3;
     }
 
     /* Helper method to convert a Meal to MealPlanItem Object*/

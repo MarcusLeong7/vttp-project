@@ -122,6 +122,16 @@ public class MealPlanRepo {
         return rowDeleted > 0;
     }
 
+    /* For premium feature*/
+    public int countMealPlansByUser(String email) {
+        Integer count = template.queryForObject(
+                SQL_COUNT_MEAL_PLAN,
+                Integer.class,
+                email
+        );
+        return count != null ? count : 0;
+    }
+
     /* HELPER METHODS */
     // Helper method to map from SQL row to MealPlan object
     private MealPlan getMealPlan(SqlRowSet rs) {

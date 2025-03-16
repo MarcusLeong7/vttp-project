@@ -46,6 +46,7 @@ public class UserSqlRepository {
             User user = new User();
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+            user.setPremium(rs.getBoolean("is_premium"));
 
             // Add Google token fields
             user.setGoogleAccessToken(rs.getString("google_access_token"));
@@ -69,5 +70,10 @@ public class UserSqlRepository {
             return rs.getInt("count") > 0;
         }
         return false;
+    }
+
+    // Update Premium Status
+    public void updatePremiumStatus(String email, boolean isPremium) {
+        template.update(SQL_UPDATE_PREMIUM_STATUS, isPremium, email);
     }
 }

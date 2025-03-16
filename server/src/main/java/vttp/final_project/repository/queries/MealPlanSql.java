@@ -13,6 +13,7 @@ public class MealPlanSql {
             "delete from meal_plans where id = ? and user_id = ?";
     public static final String SQL_UPDATE_MEAL_PLAN =
             "UPDATE meal_plans SET name = ?, description = ?, day_of_week = ? WHERE id = ? AND user_id = ?";
+    public static final String SQL_COUNT_MEAL_PLAN="select count(*) from meal_plans where user_id = ?";
 
     // Meal Plan Item queries
     public static final String SQL_INSERT_MEAL_PLAN_ITEM =

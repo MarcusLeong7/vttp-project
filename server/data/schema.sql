@@ -9,6 +9,7 @@ create table if not exists users(
 	email varchar(255) not null unique,
 	password varchar(255) not null,
 	created_at timestamp default current_timestamp,
+	is_premium boolean default false;
 	google_access_token varchar(1024),
 	google_refresh_token varchar(1024), 
 	google_token_expiry timestamp,
