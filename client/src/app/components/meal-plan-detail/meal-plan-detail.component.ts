@@ -3,6 +3,7 @@ import {MealPlanService} from '../../services/meal.plan.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CalendarService} from '../../services/calendar.service';
+import {PremiumService} from '../../services/premium.service';
 
 @Component({
   selector: 'app-meal-plan-detail',
@@ -18,11 +19,13 @@ export class MealPlanDetailComponent {
   private snackBar = inject(MatSnackBar);
   private mealPlanService = inject(MealPlanService);
   private calendarService = inject(CalendarService);
+  private premiumService = inject(PremiumService);
 
   // Component properties
   mealPlan: any = null;
   isLoading = false;
   error: string | null = null;
+  isPremium: boolean = false;
 
   // Day names for display
   weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -33,7 +36,20 @@ export class MealPlanDetailComponent {
   dinnerItems: any[] = [];
   snackItems: any[] = [];
 
+  // Get premium status
   ngOnInit(): void {
+    // First check premium status
+    this.premiumService.checkPremiumStatus().subscribe({
+      next: (isPremium) => {
+        this.isPremium = isPremium;
+        console.log('Premium status:', isPremium);
+      },
+      error: (err) => {
+        console.error('Error checking premium status:', err);
+      }
+    });
+
+    // Then load meal plan
     this.loadMealPlan();
   }
 
@@ -196,6 +212,15 @@ export class MealPlanDetailComponent {
           }
         }
       });
+  }
+
+  // Prompt Upgrade
+  promptUpgrade(): void {
+    this.snackBar.open('Google Calendar integration is a premium feature.', 'Upgrade', {
+      duration: 5000
+    }).onAction().subscribe(() => {
+      this.router.navigate(['/upgrade']);
+    });
   }
 
 }

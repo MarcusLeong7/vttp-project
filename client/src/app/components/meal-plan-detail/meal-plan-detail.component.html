@@ -13,10 +13,16 @@
         <div class="action-buttons">
           <!-- Add to google calendar button-->
           <button mat-raised-button color="accent"
-                  (click)="addToCalendar()"
-                  [disabled]="isLoading || !mealPlan.dayOfWeek">
-            <mat-icon>event</mat-icon>
-            Add to Google Calendar
+                  (click)="isPremium ? addToCalendar() : promptUpgrade()"
+                  [disabled]="isLoading || !mealPlan.dayOfWeek"
+                  [matTooltip]="!isPremium ? 'Premium feature - Upgrade to add to Google Calendar' : (!mealPlan.dayOfWeek ? 'Cannot add to calendar without a specific day' : '')">
+            <div style="display: flex; align-items: center;">
+              <mat-icon style="margin-right: 8px;">event</mat-icon>
+              <span>Add to Google Calendar</span>
+              @if (!isPremium) {
+                <mat-icon class="premium-icon" style="margin-left: 8px;">lock</mat-icon>
+              }
+            </div>
           </button>
           <!-- Edit Button-->
           <button mat-icon-button color="primary" (click)="editMealPlan()" matTooltip="Edit meal plan">

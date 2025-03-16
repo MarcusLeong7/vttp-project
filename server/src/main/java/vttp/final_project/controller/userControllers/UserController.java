@@ -3,17 +3,44 @@ package vttp.final_project.controller.userControllers;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vttp.final_project.models.userModels.User;
+import vttp.final_project.repository.user.UserSqlRepository;
+import vttp.final_project.services.userManagement.UserService;
 
 import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
+    @Autowired
+    private UserSqlRepository userSqlRepo;
+
+
+    @GetMapping("/premium-status")
+    public ResponseEntity<String> getPremiumStatus(Principal principal) {
+        if (principal == null) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", "Authentication required")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+        }
+
+        User user = userSqlRepo.findByEmail(principal.getName());
+
+        JsonObject response = Json.createObjectBuilder()
+                .add("isPremium", user.isPremium())
+                .build();
+
+        return ResponseEntity.ok(response.toString());
+    }
 
     /* This is an endpoint to test if JWT token authentication works */
     /* In postman headers tab:
