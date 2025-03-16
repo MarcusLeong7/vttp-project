@@ -146,11 +146,20 @@ export class SavedMealsComponent implements OnInit {
         this.mealPlanForm.reset();
         this.router.navigate(['/meal-plans']);
       },
-      error: (error) => {
-        this.snackBar.open('Failed to create meal plan. Please try again.', 'Close', {
-          duration: 3000
-        });
-        console.error('Error creating meal plan:', error);
+      error: (err) => {
+        // Check if this is a premium upgrade error
+        if (err.status === 403 && err.error?.requiresUpgrade) {
+          this.snackBar.open('You\'ve reached the limit for free accounts.', 'Upgrade', {
+            duration: 5000
+          }).onAction().subscribe(() => {
+            this.router.navigate(['/upgrade']);
+          });
+        } else {
+          this.snackBar.open('Failed to create meal plan. Please try again.', 'Close', {
+            duration: 3000
+          });
+        }
+        console.error('Error creating meal plan:', err);
       }
     });
   }

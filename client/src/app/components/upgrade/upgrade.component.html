@@ -1,0 +1,73 @@
+<app-header></app-header>
+
+<div class="upgrade-container">
+  <div class="upgrade-content mat-elevation-z2">
+    <h2>Upgrade to Premium</h2>
+
+    <div class="plans-section">
+      <h3>Choose a Plan</h3>
+
+      <div class="plan-cards">
+        <mat-card class="plan-card" [class.selected]="selectedPlan === 'premium'" (click)="selectPlan('premium')">
+          <mat-card-header>
+            <mat-card-title>Monthly Premium</mat-card-title>
+            <mat-card-subtitle>$9.99/month</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li>Unlimited meal plans</li>
+              <li>Google Calendar integration</li>
+              <li>Priority support</li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="plan-card" [class.selected]="selectedPlan === 'annual'" (click)="selectPlan('annual')">
+          <mat-card-header>
+            <mat-card-title>Annual Premium</mat-card-title>
+            <mat-card-subtitle>$19.99/month</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li>Everything in Monthly</li>
+              <li>Save over 15%</li>
+              <li>Workout plan exports</li>
+            </ul>
+          </mat-card-content>
+          <div class="best-value">Best Value!</div>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <h3>Payment Information</h3>
+
+      <div id="card-element" class="card-element">
+        <!-- Stripe Card Element will be inserted here -->
+      </div>
+      <div id="card-errors" class="card-errors" role="alert"></div>
+
+      @if (errorMessage) {
+        <mat-error>{{ errorMessage }}</mat-error>
+      }
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        (click)="handleSubmit()"
+        [disabled]="loading">
+        @if (loading) {
+          <mat-spinner diameter="20"></mat-spinner> Processing...
+        } @else {
+          Upgrade Now
+        }
+      </button>
+    </div>
+
+    <div class="security-info">
+      <mat-icon>lock</mat-icon>
+      <p>Your payment information is secure. We use Stripe for secure payment processing.</p>
+    </div>
+  </div>
+</div>
