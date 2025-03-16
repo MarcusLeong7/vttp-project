@@ -83,7 +83,7 @@ export class MealPlanDetailComponent {
   // Get day name from day number
   getDayName(dayOfWeek: number | null): string {
     if (dayOfWeek === null || dayOfWeek === undefined) {
-      return 'Any day';
+      return 'No specific day';
     }
     return this.weekdays[dayOfWeek];
   }

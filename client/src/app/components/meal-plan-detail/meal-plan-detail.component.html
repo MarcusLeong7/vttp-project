@@ -12,7 +12,9 @@
         <h2 class="mat-headline-4">{{ mealPlan.name }}</h2>
         <div class="action-buttons">
           <!-- Add to google calendar button-->
-          <button mat-raised-button color="accent" (click)="addToCalendar()" [disabled]="isLoading">
+          <button mat-raised-button color="accent"
+                  (click)="addToCalendar()"
+                  [disabled]="isLoading || !mealPlan.dayOfWeek">
             <mat-icon>event</mat-icon>
             Add to Google Calendar
           </button>

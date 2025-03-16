@@ -130,7 +130,12 @@ public class MealPlanRepo {
         mealPlan.setName(rs.getString("name"));
         mealPlan.setDescription(rs.getString("description"));
         mealPlan.setUserId(rs.getString("user_id"));
-        mealPlan.setDayOfWeek(rs.getInt("day_of_week"));
+        int dayOfWeek = rs.getInt("day_of_week");
+        if (rs.wasNull()) {
+            mealPlan.setDayOfWeek(null);
+        } else {
+            mealPlan.setDayOfWeek(dayOfWeek);
+        }
         mealPlan.setCreatedAt(rs.getTimestamp("created_at"));
         return mealPlan;
     }

@@ -154,7 +154,7 @@
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Day of Week (Optional)</mat-label>
                   <mat-select formControlName="dayOfWeek">
-                    <mat-option [value]="null">Any day</mat-option>
+                    <mat-option [value]="null">No specific day</mat-option>
                     @for (day of dayOptions; track day.value) {
                       <mat-option [value]="day.value">{{ day.label }}</mat-option>
                     }

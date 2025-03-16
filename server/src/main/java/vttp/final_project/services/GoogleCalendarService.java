@@ -133,44 +133,46 @@ public class GoogleCalendarService {
         LocalDate today = LocalDate.now();
         System.out.println("Today is: " + today + " (Day " + today.getDayOfWeek().getValue() + ")");
 
-        // If dayOfWeek is specified, calculate the next occurrence of that day
-        if (dayOfWeek != null) {
-            // Convert between different day numbering systems
-            // Your system: 0=Sunday, 1=Monday, ..., 6=Saturday
-            // Java's system: 1=Monday, 2=Tuesday, ..., 7=Sunday
-
-            // Convert your dayOfWeek to Java's DayOfWeek value
-            int javaDayOfWeek;
-            if (dayOfWeek == 0) {
-                javaDayOfWeek = 7; // Sunday in Java is 7
-            } else {
-                javaDayOfWeek = dayOfWeek; // Other days (Mon-Sat) are just offset by 0
-            }
-
-            System.out.println("Target day: " + dayOfWeek + " (Java day: " + javaDayOfWeek + ")");
-
-            int currentJavaDayOfWeek = today.getDayOfWeek().getValue(); // 1-7 (Monday-Sunday)
-            System.out.println("Current Java day of week: " + currentJavaDayOfWeek);
-
-            // Calculate days to add to reach target day
-            int daysToAdd = (javaDayOfWeek - currentJavaDayOfWeek + 7) % 7;
-
-            // If target day is today (daysToAdd = 0), schedule for next week
-            if (daysToAdd == 0) {
-                daysToAdd = 7;
-            }
-
-            System.out.println("Days to add: " + daysToAdd);
-            LocalDate targetDate = today.plusDays(daysToAdd);
-            System.out.println("Target date: " + targetDate + " (Day " + targetDate.getDayOfWeek().getValue() + ")");
-
-            return targetDate;
-        } else {
-            // If no day specified, use tomorrow (not today)
+        // If dayOfWeek is null, it means "Any day" was selected
+        if (dayOfWeek == null) {
+            // Use tomorrow (not today) for "Any day" selection
             LocalDate tomorrow = today.plusDays(1);
-            System.out.println("No day specified, using tomorrow: " + tomorrow);
+            System.out.println("No day specified (Any day), using tomorrow: " + tomorrow);
             return tomorrow;
         }
+
+        // From here, we know dayOfWeek is not null
+
+        // Convert between different day numbering systems
+        // Your system: 0=Sunday, 1=Monday, ..., 6=Saturday
+        // Java's system: 1=Monday, 2=Tuesday, ..., 7=Sunday
+
+        // Convert your dayOfWeek to Java's DayOfWeek value
+        int javaDayOfWeek;
+        if (dayOfWeek == 0) {
+            javaDayOfWeek = 7; // Sunday in Java is 7
+        } else {
+            javaDayOfWeek = dayOfWeek; // Other days (Mon-Sat) are just offset by 0
+        }
+
+        System.out.println("Target day: " + dayOfWeek + " (Java day: " + javaDayOfWeek + ")");
+
+        int currentJavaDayOfWeek = today.getDayOfWeek().getValue(); // 1-7 (Monday-Sunday)
+        System.out.println("Current Java day of week: " + currentJavaDayOfWeek);
+
+        // Calculate days to add to reach target day
+        int daysToAdd = (javaDayOfWeek - currentJavaDayOfWeek + 7) % 7;
+
+        // If target day is today (daysToAdd = 0), schedule for next week
+        if (daysToAdd == 0) {
+            daysToAdd = 7;
+        }
+
+        System.out.println("Days to add: " + daysToAdd);
+        LocalDate targetDate = today.plusDays(daysToAdd);
+        System.out.println("Target date: " + targetDate + " (Day " + targetDate.getDayOfWeek().getValue() + ")");
+
+        return targetDate;
     }
 
     private Credential getCredentials(String refreshToken) {
