@@ -109,25 +109,23 @@
             <h3>Your Metrics</h3>
 
             <div class="metrics-grid">
-              <div
-                class="metric-card"
-                [ngClass]="getBmiCategory(calculateBMI()).toLowerCase().replace(' ', '-')">
+              <div class="metric-card" [ngClass]="getBmiCategory(calculateBMI()).toLowerCase().replace(' ', '-')">
                 <div class="metric-value">{{ calculateBMI() }}</div>
                 <div class="metric-label">BMI</div>
                 <div class="metric-category">{{ getBmiCategory(calculateBMI()) }}</div>
               </div>
 
               <div class="metric-card">
-                <div class="metric-value placeholder">
-                  {{ hasHealthData ? 'Calculating...' : 'N/A' }}
+                <div class="metric-value" [class.placeholder]="bmrValue === null">
+                  {{ bmrValue !== null ? bmrValue : (hasHealthData ? 'Calculating...' : 'N/A') }}
                 </div>
                 <div class="metric-label">BMR</div>
                 <div class="metric-description">Basal Metabolic Rate (calories/day)</div>
               </div>
 
               <div class="metric-card">
-                <div class="metric-value placeholder">
-                  {{ hasHealthData ? 'Calculating...' : 'N/A' }}
+                <div class="metric-value" [class.placeholder]="tdeeValue === null">
+                  {{ tdeeValue !== null ? tdeeValue : (hasHealthData ? 'Calculating...' : 'N/A') }}
                 </div>
                 <div class="metric-label">TDEE</div>
                 <div class="metric-description">Total Daily Energy Expenditure (calories/day)</div>

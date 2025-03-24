@@ -17,10 +17,14 @@ export class UserProfileComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   // Component properties
-  healthForm !: FormGroup;
+  healthForm!: FormGroup;
   isLoading = false;
   hasHealthData = false;
   errorMessage = '';
+
+  // Add these properties to store the calculated values
+  bmrValue: number | null = null;
+  tdeeValue: number | null = null;
 
   // Activity level options
   activityLevels = [
@@ -73,6 +77,10 @@ export class UserProfileComponent implements OnInit {
             activityLevel: data.healthData.activityLevel,
             fitnessGoal: data.healthData.fitnessGoal
           });
+
+          // Store the BMR and TDEE values
+          this.bmrValue = data.healthData.bmr;
+          this.tdeeValue = data.healthData.tdee;
         }
       },
       error: (err) => {
@@ -102,13 +110,10 @@ export class UserProfileComponent implements OnInit {
           duration: 3000
         });
 
-        // Update form with calculated values
+        // Update the BMR and TDEE values with the calculated values from the server
         if (response.healthData) {
-          this.healthForm.patchValue({
-            bmi: response.healthData.bmi,
-            bmr: response.healthData.bmr,
-            tdee: response.healthData.tdee
-          });
+          this.bmrValue = response.healthData.bmr;
+          this.tdeeValue = response.healthData.tdee;
         }
       },
       error: (err) => {
@@ -122,6 +127,9 @@ export class UserProfileComponent implements OnInit {
   resetForm(): void {
     this.healthForm.reset();
     this.errorMessage = '';
+    // Reset the BMR and TDEE values
+    this.bmrValue = null;
+    this.tdeeValue = null;
   }
 
   calculateBMI(): number {
