@@ -9,4 +9,5 @@ public class UserSql {
     public static final String SQL_CHECK_USER_EXISTS = "SELECT COUNT(*) as count FROM users WHERE email = ?";
     public static final String SQL_UPDATE_GOOGLE_TOKEN = "UPDATE users SET google_access_token = ?, google_refresh_token = ?, google_token_expiry = ? WHERE email = ?";
     public static final String SQL_UPDATE_PREMIUM_STATUS = "UPDATE users SET is_premium = ? WHERE email = ?";
+    public static final String SQL_GET_USERID = "SELECT id FROM users WHERE email = ?";
 }

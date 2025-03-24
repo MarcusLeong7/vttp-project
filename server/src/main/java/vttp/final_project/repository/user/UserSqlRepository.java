@@ -76,4 +76,13 @@ public class UserSqlRepository {
     public void updatePremiumStatus(String email, boolean isPremium) {
         template.update(SQL_UPDATE_PREMIUM_STATUS, isPremium, email);
     }
+
+    // Get UserId
+    public Integer getUserIdByEmail(String email) {
+        try {
+            return template.queryForObject(SQL_GET_USERID,Integer.class,email);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

@@ -33,6 +33,8 @@ import {SafeResourceUrlPipe} from './pipes/safe-resoure-url.pipe';
 import {PaymentService} from './services/payment.service';
 import { UpgradeComponent } from './components/upgrade/upgrade.component';
 import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import {UserProfileService} from './services/user-profile.service';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -57,6 +59,8 @@ export const appRoutes: Routes = [
   // Upgrade Payment Component
   { path: 'upgrade', component: UpgradeComponent, canActivate: [authguard] },
   { path: 'payment/success', component: PaymentSuccessComponent, canActivate: [authguard] },
+  // User Profile Component
+  { path: 'profile', component: UserProfileComponent, canActivate: [authguard] },
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -82,13 +86,14 @@ export const appRoutes: Routes = [
     ScheduleComponent,
     UpgradeComponent,
     PaymentSuccessComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule, SafeResourceUrlPipe,
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
     AuthService, MealService,MealPlanService,WorkoutService,
-    CalendarService,PaymentService,MealStore],
+    CalendarService,PaymentService,UserProfileService,MealStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {
