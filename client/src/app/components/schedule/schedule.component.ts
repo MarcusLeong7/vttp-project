@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CalendarService} from '../../services/calendar.service';
 import {PremiumService} from '../../services/premium.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.css'
 })
-export class ScheduleComponent {
+export class ScheduleComponent  implements OnInit {
 
   // Dependency Injection
   private calendarSvc = inject(CalendarService);
@@ -29,22 +29,29 @@ export class ScheduleComponent {
   showUpgradePrompt = false;
 
   ngOnInit(): void {
-    // Check premium status first
-    this.premiumSvc.isPremium$.subscribe(isPremium => {
-      this.isPremium = isPremium;
+    this.isLoading = true;
 
-      // Only proceed with calendar operations if premium
-      if (isPremium) {
-        this.checkGoogleConnection();
-        if (this.isConnectedToGoogle) {
-          this.loadCalendarEvents();
+    // Actively check premium status and wait for the result
+    this.premiumSvc.checkPremiumStatus().subscribe({
+      next: (isPremium) => {
+        this.isPremium = isPremium;
+
+        // Only proceed with calendar operations if premium
+        if (isPremium) {
+          this.checkGoogleConnection();
+          // Don't check isConnectedToGoogle here - do it in the checkGoogleConnection callback
+        } else {
+          this.showUpgradePrompt = true;
+          this.isLoading = false;
         }
-      } else {
-        this.showUpgradePrompt = true;
+      },
+      error: (err) => {
+        console.error('Error checking premium status:', err);
+        this.isLoading = false;
+        this.errorMessage = 'Failed to verify premium status.';
       }
     });
   }
-
 
   checkGoogleConnection(): void {
     this.isLoading = true;
@@ -53,6 +60,7 @@ export class ScheduleComponent {
         this.isConnectedToGoogle = true;
         this.calendarEmbedUrl = response.embedUrl;
         this.isLoading = false;
+        // When connection is successful, load events
         this.loadCalendarEvents();
       },
       error: (err) => {

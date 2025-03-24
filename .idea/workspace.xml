@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e644ebf-6385-4a6a-9519-f4f4c0d1e395" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/meal-plan-detail/meal-plan-detail.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/meal-plan-detail/meal-plan-detail.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/upgrade/upgrade.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/upgrade/upgrade.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/upgrade/upgrade.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/upgrade/upgrade.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/services/payment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/services/payment.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/data/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/data/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/GoogleCalendarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/GoogleCalendarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/StripeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/StripeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/GoogleCalendarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/GoogleCalendarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/StripeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/StripeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1742109115790</updated>
       <workItem from="1742109118287" duration="48000" />
-      <workItem from="1742789280066" duration="2541000" />
+      <workItem from="1742789280066" duration="3015000" />
     </task>
     <servers />
   </component>
