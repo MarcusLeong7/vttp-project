@@ -16,105 +16,6 @@
       </mat-card>
     </div>
 
-    <!-- Weight Tracking Section -->
-    <div class="weight-tracking-section">
-      <h3 class="section-title mat-headline-5">Weight Progression</h3>
-
-      <div class="weight-tracking-container">
-        <!-- Weight Chart Card -->
-        <mat-card class="weight-chart-card">
-          <mat-card-header>
-            <mat-card-title>Last 30 Days</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            @if (isLoading) {
-              <div class="loading-container">
-                <mat-spinner diameter="40"></mat-spinner>
-                <span>Loading your weight logs...</span>
-              </div>
-            } @else if (errorMessage) {
-              <div class="error-message">{{ errorMessage }}</div>
-            } @else if (weightLogs.length === 0) {
-              <div class="no-data-message">
-                <mat-icon>info</mat-icon>
-                <p>No weight logs found. Start tracking your weight progression by adding your first entry.</p>
-              </div>
-            } @else {
-              <div class="chart-container">
-                <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
-              </div>
-            }
-
-        <!-- Weight History Table - Add this here -->
-        <div class="weight-history-table" *ngIf="weightLogs.length > 0">
-          <h4>Weight History</h4>
-          <p-table [value]="sortedWeightLogs" [rows]="5" [paginator]="true" styleClass="p-datatable-sm">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Date</th>
-                <th>Weight (kg)</th>
-                <th>Notes</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-log>
-              <tr>
-                <td>{{ log.date | date:'mediumDate' }}</td>
-                <td>{{ log.weight }}</td>
-                <td>{{ log.notes || 'No notes' }}</td>
-                <td>
-                  <button mat-icon-button color="warn" (click)="deleteWeightLog(log.id, $event)" matTooltip="Delete log">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-        </mat-card-content>
-        </mat-card>
-
-        <!-- Log Weight Form Card -->
-        <mat-card class="log-weight-card">
-          <mat-card-header>
-            <mat-card-title>Log Today's Weight</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <form [formGroup]="weightForm" (submit)="logWeight()">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Weight (kg)</mat-label>
-                <input matInput type="number" formControlName="weight" placeholder="e.g. 70">
-                @if (weightForm.get('weight')?.hasError('required') && weightForm.get('weight')?.touched) {
-                  <mat-error>Weight is required</mat-error>
-                }
-                @if (weightForm.get('weight')?.hasError('min')) {
-                  <mat-error>Weight must be at least 20 kg</mat-error>
-                }
-                @if (weightForm.get('weight')?.hasError('max')) {
-                  <mat-error>Weight must be less than 500 kg</mat-error>
-                }
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Notes (optional)</mat-label>
-                <textarea matInput formControlName="notes" placeholder="Any observations about your weight today?"></textarea>
-              </mat-form-field>
-
-              <button mat-raised-button color="primary" type="submit"
-                      [disabled]="weightForm.invalid || isLoading"
-                      class="full-width submit-button">
-                @if (isLoading) {
-                  <mat-spinner diameter="20"></mat-spinner> Saving...
-                } @else {
-                  Log Weight
-                }
-              </button>
-            </form>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-
     <!-- Main Features Section -->
     <div class="features-section">
       <h3 class="section-title mat-headline-5">Explore Features</h3>
@@ -173,35 +74,140 @@
             </button>
           </mat-card-actions>
         </mat-card>
+
       </div>
     </div>
+    <!-- Weight Tracking Section -->
+    <div class="weight-tracking-section">
+      <h3 class="section-title mat-headline-5">Weight Progression</h3>
 
-    <!-- Quick Stats Section -->
-    <div class="stats-section">
-      <h3 class="section-title mat-headline-5">Your Progress</h3>
-
-      <div class="stats-grid">
-        <mat-card class="stat-card">
+      <div class="weight-tracking-container">
+        <!-- Weight Chart Card -->
+        <mat-card class="weight-chart-card">
+          <mat-card-header>
+            <mat-card-title>Last 30 Days</mat-card-title>
+          </mat-card-header>
           <mat-card-content>
-            <h5 class="mat-subtitle-1">Meals Planned</h5>
-            <p class="stat-value">0</p>
+            @if (isLoading) {
+              <div class="loading-container">
+                <mat-spinner diameter="40"></mat-spinner>
+                <span>Loading your weight logs...</span>
+              </div>
+            } @else if (errorMessage) {
+              <div class="error-message">{{ errorMessage }}</div>
+            } @else if (weightLogs.length === 0) {
+              <div class="no-data-message">
+                <mat-icon>info</mat-icon>
+                <p>No weight logs found. Start tracking your weight progression by adding your first entry.</p>
+              </div>
+            } @else {
+              <div class="chart-container">
+                <p-chart
+                  type="line"
+                  [data]="chartData"
+                  [options]="chartOptions"
+                  [style]="{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%'}"
+                ></p-chart>
+              </div>
+            }
+
+            <!-- Weight History Table - Add this here -->
+            <div class="weight-history-table" *ngIf="weightLogs.length > 0">
+              <h4>Weight History</h4>
+              <p-table [value]="sortedWeightLogs" [rows]="5" [paginator]="true" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Date</th>
+                    <th>Weight (kg)</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-log>
+                  <tr>
+                    <td>{{ log.date | date:'mediumDate' }}</td>
+                    <td>{{ log.weight }}</td>
+                    <td>{{ log.notes || 'No notes' }}</td>
+                    <td>
+                      <button mat-icon-button color="warn" (click)="deleteWeightLog(log.id, $event)" matTooltip="Delete log">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card">
+        <!-- Log Weight Form Card -->
+        <mat-card class="log-weight-card">
+          <mat-card-header>
+            <mat-card-title>Log Today's Weight</mat-card-title>
+          </mat-card-header>
           <mat-card-content>
-            <h5 class="mat-subtitle-1">Workouts Completed</h5>
-            <p class="stat-value">0</p>
-          </mat-card-content>
-        </mat-card>
+            <form [formGroup]="weightForm" (submit)="logWeight()">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Weight (kg)</mat-label>
+                <input matInput type="number" formControlName="weight" placeholder="e.g. 70">
+                @if (weightForm.get('weight')?.hasError('required') && weightForm.get('weight')?.touched) {
+                  <mat-error>Weight is required</mat-error>
+                }
+                @if (weightForm.get('weight')?.hasError('min')) {
+                  <mat-error>Weight must be at least 20 kg</mat-error>
+                }
+                @if (weightForm.get('weight')?.hasError('max')) {
+                  <mat-error>Weight must be less than 500 kg</mat-error>
+                }
+              </mat-form-field>
 
-        <mat-card class="stat-card">
-          <mat-card-content>
-            <h5 class="mat-subtitle-1">Wellness Streak</h5>
-            <p class="stat-value">0 days</p>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Notes (optional)</mat-label>
+                <textarea matInput formControlName="notes" placeholder="Any observations about your weight today?"></textarea>
+              </mat-form-field>
+
+              <button mat-raised-button color="primary" type="submit"
+                      [disabled]="weightForm.invalid || isLoading"
+                      class="full-width submit-button">
+                @if (isLoading) {
+                  <mat-spinner diameter="20"></mat-spinner> Saving...
+                } @else {
+                  Log Weight
+                }
+              </button>
+            </form>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
   </div>
 </div>
+
+
+<!-- Quick Stats Section -->
+<!--    <div class="stats-section">-->
+<!--      <h3 class="section-title mat-headline-5">Your Progress</h3>-->
+
+<!--      <div class="stats-grid">-->
+<!--        <mat-card class="stat-card">-->
+<!--          <mat-card-content>-->
+<!--            <h5 class="mat-subtitle-1">Meals Planned</h5>-->
+<!--            <p class="stat-value">0</p>-->
+<!--          </mat-card-content>-->
+<!--        </mat-card>-->
+
+<!--        <mat-card class="stat-card">-->
+<!--          <mat-card-content>-->
+<!--            <h5 class="mat-subtitle-1">Workouts Completed</h5>-->
+<!--            <p class="stat-value">0</p>-->
+<!--          </mat-card-content>-->
+<!--        </mat-card>-->
+
+<!--        <mat-card class="stat-card">-->
+<!--          <mat-card-content>-->
+<!--            <h5 class="mat-subtitle-1">Wellness Streak</h5>-->
+<!--            <p class="stat-value">0 days</p>-->
+<!--          </mat-card-content>-->
+<!--        </mat-card>-->
+<!--      </div>-->
+<!--    </div>-->

@@ -1,5 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
+import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -10,7 +9,8 @@ import {WeightLog} from '../../models/User/user';
   selector: 'app-home',
   standalone: false,
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
+  encapsulation: ViewEncapsulation.None // This allows styles to leak out to children
 })
 export class HomeComponent implements OnInit {
 
@@ -95,10 +95,18 @@ export class HomeComponent implements OnInit {
 
   initChartOptions(): void {
     this.chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: true,
-          position: 'top'
+          position: 'top',
+          labels: {
+            font: {
+              family: 'Roboto, "Helvetica Neue", sans-serif',
+              size: 12
+            }
+          }
         },
         tooltip: {
           mode: 'index',
@@ -129,6 +137,20 @@ export class HomeComponent implements OnInit {
           grid: {
             color: '#ebedef'
           }
+        }
+      },
+      layout: {
+        padding: 10
+      },
+      // Additional responsive settings
+      elements: {
+        line: {
+          tension: 0.4
+        },
+        point: {
+          radius: 4,
+          hitRadius: 10,
+          hoverRadius: 6
         }
       }
     };

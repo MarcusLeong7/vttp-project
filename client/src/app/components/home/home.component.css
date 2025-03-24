@@ -216,8 +216,9 @@
 
 .chart-container {
   height: 300px;
+  width: 100%;
   position: relative;
-  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .loading-container {
@@ -268,45 +269,82 @@
   font-size: 16px;
 }
 
-/* Make sure PrimeNG chart is responsive */
-.p-chart {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* PrimeNG Chart styling to match Material Design */
-:host .p-chart canvas {
+/* These styles will apply directly to PrimeNG components */
+.p-chart canvas {
   border-radius: 4px;
 }
 
-/* PrimeNG Table styling to match Material Design */
-:host .p-datatable {
+/* PrimeNG Table styling */
+.weight-history-table .p-datatable {
   margin-top: 20px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-:host .p-datatable .p-datatable-header,
-:host .p-datatable .p-datatable-thead > tr > th {
+.weight-history-table .p-datatable .p-datatable-header,
+.weight-history-table .p-datatable .p-datatable-thead > tr > th {
   background-color: #f5f5f5;
   color: rgba(0, 0, 0, 0.87);
   font-weight: 500;
+  padding: 12px 16px;
 }
 
-:host .p-datatable .p-datatable-tbody > tr {
+.weight-history-table .p-datatable .p-datatable-tbody > tr {
   background-color: #ffffff;
   transition: background-color 0.2s;
 }
 
-:host .p-datatable .p-datatable-tbody > tr:hover {
+.weight-history-table .p-datatable .p-datatable-tbody > tr:hover {
   background-color: #f5f5f5;
 }
 
-:host .p-paginator {
-  background-color: transparent;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+.weight-history-table .p-datatable .p-datatable-tbody > tr > td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-:host .weight-history-table h4 {
+.weight-history-table .p-paginator {
+  background-color: transparent;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 10px;
+}
+
+/* Responsive layout improvements */
+.weight-tracking-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .weight-tracking-container {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container {
+    height: 250px; /* Slightly smaller on mobile */
+  }
+}
+
+/* Card styling */
+.weight-chart-card, .log-weight-card {
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weight-chart-card:hover, .log-weight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Weight history table heading */
+.weight-history-table h4 {
   margin-top: 24px;
   margin-bottom: 16px;
   color: #3f51b5;
