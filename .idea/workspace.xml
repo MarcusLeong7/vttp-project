@@ -6,10 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="1e644ebf-6385-4a6a-9519-f4f4c0d1e395" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/user-profile/user-profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/user-profile/user-profile.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/user-profile/user-profile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/user-profile/user-profile.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/components/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/header/header.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/components/home/home.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/home/home.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/components/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/components/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/models/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/models/User/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/services/auth.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1742109115790</updated>
       <workItem from="1742109118287" duration="48000" />
-      <workItem from="1742789280066" duration="10597000" />
+      <workItem from="1742789280066" duration="12562000" />
     </task>
     <servers />
   </component>

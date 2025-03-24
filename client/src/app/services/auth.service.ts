@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, map, Observable, throwError} from 'rxjs';
-import {User} from '../models/user';
+import {User} from '../models/User/user';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})

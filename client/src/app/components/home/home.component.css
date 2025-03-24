@@ -182,3 +182,133 @@
     font-size: 1.5rem;
   }
 }
+
+/* For Weight tracking*/
+
+.weight-tracking-section {
+  margin-bottom: 40px;
+}
+
+.weight-tracking-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .weight-tracking-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.weight-chart-card, .log-weight-card {
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weight-chart-card:hover, .log-weight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container {
+  height: 300px;
+  position: relative;
+  padding: 10px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.loading-container span {
+  margin-top: 16px;
+  color: #666;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 300px;
+  color: #757575;
+  padding: 20px;
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  color: #f44336;
+  padding: 16px;
+  text-align: center;
+}
+
+.submit-button {
+  margin-top: 16px;
+  height: 48px;
+  font-size: 16px;
+}
+
+/* Make sure PrimeNG chart is responsive */
+.p-chart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* PrimeNG Chart styling to match Material Design */
+:host .p-chart canvas {
+  border-radius: 4px;
+}
+
+/* PrimeNG Table styling to match Material Design */
+:host .p-datatable {
+  margin-top: 20px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:host .p-datatable .p-datatable-header,
+:host .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f5f5f5;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 500;
+}
+
+:host .p-datatable .p-datatable-tbody > tr {
+  background-color: #ffffff;
+  transition: background-color 0.2s;
+}
+
+:host .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #f5f5f5;
+}
+
+:host .p-paginator {
+  background-color: transparent;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:host .weight-history-table h4 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  color: #3f51b5;
+  font-weight: 500;
+}

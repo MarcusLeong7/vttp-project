@@ -35,6 +35,10 @@ import { UpgradeComponent } from './components/upgrade/upgrade.component';
 import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import {UserProfileService} from './services/user-profile.service';
+import {ChartModule} from 'primeng/chart';
+import {WeightLogService} from './services/weight-log.service';
+import {PremiumService} from './services/premium.service';
+import {PrimeNgModule} from './angular-material/PrimeNg.module';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -89,11 +93,12 @@ export const appRoutes: Routes = [
     UserProfileComponent,
   ],
   imports: [
-    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule, SafeResourceUrlPipe,
+    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes),
+    MaterialModule, SafeResourceUrlPipe, PrimeNgModule
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
     AuthService, MealService,MealPlanService,WorkoutService,
-    CalendarService,PaymentService,UserProfileService,MealStore],
+    CalendarService,PaymentService,UserProfileService,WeightLogService,PremiumService,MealPlanService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
