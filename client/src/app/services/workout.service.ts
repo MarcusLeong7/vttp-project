@@ -12,8 +12,12 @@ export class WorkoutService {
   private http = inject(HttpClient);
 
   // Search workouts with optional filters
-  searchWorkouts(searchParams?: WorkoutSearchParams): Observable<Workout[]> {
-    let params = new HttpParams();
+  // Add pagination params to search method
+  searchWorkouts(searchParams?: WorkoutSearchParams, page: number = 0, size: number = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
     if (searchParams) {
       if (searchParams.force) {
         params = params.set('force', searchParams.force);
@@ -31,7 +35,7 @@ export class WorkoutService {
         map(response => {
           // Handle string response
           const data = typeof response === 'string' ? JSON.parse(response) : response;
-          return data as Workout[];
+          return data;
         })
       );
   }

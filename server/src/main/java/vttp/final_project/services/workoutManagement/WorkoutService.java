@@ -2,6 +2,7 @@ package vttp.final_project.services.workoutManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vttp.final_project.models.PaginatedResult;
 import vttp.final_project.models.Workout;
 import vttp.final_project.repository.workout.WorkoutRepository;
 
@@ -14,8 +15,29 @@ public class WorkoutService {
     private WorkoutRepository workoutRepo;
 
     // Search workouts
-    public List<Workout> searchWorkouts(String force, String level, String primaryMuscle) {
-        return workoutRepo.searchWorkouts(force, level, primaryMuscle);
+    public PaginatedResult<Workout> searchWorkouts(String force, String level, String primaryMuscle, int page, int size) {
+        List<Workout> allWorkouts = workoutRepo.searchWorkouts(force, level, primaryMuscle);
+
+        // Calculate pagination values
+        int totalItems = allWorkouts.size();
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+
+        // Ensure page number is valid
+        if (page < 0) page = 0;
+        if (page >= totalPages && totalPages > 0) page = totalPages - 1;
+
+        // Get current page items
+        int startIndex = page * size;
+        int endIndex = Math.min(startIndex + size, totalItems);
+
+        List<Workout> pagedWorkouts;
+        if (startIndex < totalItems) {
+            pagedWorkouts = allWorkouts.subList(startIndex, endIndex);
+        } else {
+            pagedWorkouts = List.of(); // Empty list if page is beyond results
+        }
+
+        return new PaginatedResult<>(pagedWorkouts, totalItems, totalPages, page);
     }
 
     // Save a workout

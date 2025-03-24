@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vttp.final_project.models.PaginatedResult;
 import vttp.final_project.models.Workout;
 import vttp.final_project.services.workoutManagement.WorkoutService;
 
@@ -25,20 +26,29 @@ public class WorkoutController {
     public ResponseEntity<String> searchWorkouts(
             @RequestParam(required = false) String force,
             @RequestParam(required = false) String level,
-            @RequestParam(required = false) String primaryMuscle) {
+            @RequestParam(required = false) String primaryMuscle,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
 
-        List<Workout> workouts = workoutSvc.searchWorkouts(force, level, primaryMuscle);
+        // Get paginated results
+        PaginatedResult<Workout> result = workoutSvc.searchWorkouts(force, level, primaryMuscle, page, size);
 
         // Convert list of workouts to JSON array
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        for (Workout workout : workouts) {
+        for (Workout workout : result.getItems()) {
             arrayBuilder.add(workoutToJsonObject(workout));
         }
 
-        JsonArray resp = arrayBuilder.build();
+        // Build response with pagination metadata
+        JsonObject resp = Json.createObjectBuilder()
+                .add("workouts", arrayBuilder.build())
+                .add("totalItems", result.getTotalItems())
+                .add("totalPages", result.getTotalPages())
+                .add("currentPage", result.getCurrentPage())
+                .build();
+
         return ResponseEntity.ok(resp.toString());
     }
-
     /* Save Workouts to Database */
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveWorkouts(@RequestBody Map<String, List<Workout>> payload, Principal principal) {

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {WorkoutService} from '../../services/workout.service';
 import {Router} from '@angular/router';
 import {Workout, WorkoutSearchParams} from '../../models/Workout/workout';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-workout-search',
@@ -24,6 +25,15 @@ export class WorkoutSearchComponent {
   isLoading = false;
   errorMessage = '';
 
+  // Pagination properties
+  currentPage = 0;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+
+  // Store the last search params to reuse when changing pages
+  lastSearchParams: WorkoutSearchParams | null = null;
+
   ngOnInit(): void {
     this.searchForm = this.fb.group({
       force: [''],
@@ -38,10 +48,21 @@ export class WorkoutSearchComponent {
     // Extract form search values
     const searchParams: WorkoutSearchParams = this.searchForm.value;
 
-    this.workoutSvc.searchWorkouts(searchParams)
+    // Store the search params for pagination
+    this.lastSearchParams = searchParams;
+    this.currentPage = 0; // Reset to first page on new search
+
+    this.fetchWorkouts(searchParams, this.currentPage);
+  }
+
+  private fetchWorkouts(searchParams: WorkoutSearchParams, page: number) {
+    this.workoutSvc.searchWorkouts(searchParams, page, this.pageSize)
       .subscribe({
-        next: (workouts) => {
-          this.workouts = workouts;
+        next: (data) => {
+          this.workouts = data.workouts;
+          this.totalItems = data.totalItems;
+          this.totalPages = data.totalPages;
+          this.currentPage = data.currentPage;
           this.isLoading = false;
         },
         error: (err) => {
@@ -60,7 +81,10 @@ export class WorkoutSearchComponent {
       primaryMuscle: ''
     });
     // Empty workout list
-    this.workouts = []
+    this.workouts = [];
+    this.lastSearchParams = null;
+    this.totalItems = 0;
+    this.totalPages = 0;
   }
 
   selectWorkouts(selectedWorkoutIds: string[]) {
@@ -91,4 +115,16 @@ export class WorkoutSearchComponent {
         }
       });
   }
+
+  // Handle page change events from paginator
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+
+    if (this.lastSearchParams) {
+      this.isLoading = true;
+      this.fetchWorkouts(this.lastSearchParams, this.currentPage);
+    }
+  }
+
 }

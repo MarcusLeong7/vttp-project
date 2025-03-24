@@ -5,12 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e644ebf-6385-4a6a-9519-f4f4c0d1e395" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/components/schedule/schedule.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/WorkoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/controller/WorkoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/workoutManagement/WorkoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/vttp/final_project/services/workoutManagement/WorkoutService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,7 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1742109115790</updated>
       <workItem from="1742109118287" duration="48000" />
-      <workItem from="1742789280066" duration="3015000" />
+      <workItem from="1742789280066" duration="3644000" />
     </task>
     <servers />
   </component>

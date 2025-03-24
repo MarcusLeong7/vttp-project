@@ -73,3 +73,8 @@
 .results-container {
   margin-top: 24px;
 }
+
+mat-paginator {
+  margin-top: 20px;
+  background-color: transparent;
+}
