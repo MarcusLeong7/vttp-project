@@ -57,10 +57,10 @@ export class MealSearchComponent implements OnInit {
   resetForm() {
     // Reset the form
     this.searchForm.reset({
-      maxCalories: 0,
+      maxCalories: 1000,
       minProtein: '0',
-      maxCarbs: '0',
-      maxFats: '0'
+      maxCarbs: '100',
+      maxFats: '100'
     });
     // Empty meal list
     this.meals = []

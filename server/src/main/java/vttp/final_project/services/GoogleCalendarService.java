@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import vttp.final_project.models.mealModels.MealPlan;
 import vttp.final_project.models.mealModels.MealPlanItem;
 import vttp.final_project.models.userModels.User;
-import vttp.final_project.repository.user.UserRepository;
 import vttp.final_project.repository.user.UserSqlRepository;
 
 import java.io.IOException;

@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.css'
 })
-export class ScheduleComponent  implements OnInit {
+export class ScheduleComponent implements OnInit {
 
   // Dependency Injection
   private calendarSvc = inject(CalendarService);
