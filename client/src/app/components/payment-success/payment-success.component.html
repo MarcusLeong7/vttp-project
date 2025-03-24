@@ -1,0 +1,24 @@
+
+<div class="payment-result-container">
+  <div class="result-card mat-elevation-z2">
+    @if (isVerifying) {
+      <mat-spinner class="center-spinner"></mat-spinner>
+      <h2>Verifying your payment...</h2>
+      <p>Please wait while we confirm your subscription.</p>
+    } @else if (error) {
+      <div class="error-icon">
+        <mat-icon>error</mat-icon>
+      </div>
+      <h2>Payment Verification Failed</h2>
+      <p>We couldn't verify your payment. Please contact support if you believe this is an error.</p>
+      <button mat-raised-button color="primary" routerLink="/home">Return to Home</button>
+    } @else {
+      <div class="success-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <h2>Payment Successful!</h2>
+      <p>Thank you for upgrading to premium! You now have access to all premium features.</p>
+      <button mat-raised-button color="primary" routerLink="/home">Continue to Dashboard</button>
+    }
+  </div>
+</div>

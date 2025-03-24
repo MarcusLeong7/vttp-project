@@ -32,6 +32,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import {SafeResourceUrlPipe} from './pipes/safe-resoure-url.pipe';
 import {PaymentService} from './services/payment.service';
 import { UpgradeComponent } from './components/upgrade/upgrade.component';
+import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -55,6 +56,7 @@ export const appRoutes: Routes = [
   { path: 'schedule', component: ScheduleComponent, canActivate: [authguard] },
   // Upgrade Payment Component
   { path: 'upgrade', component: UpgradeComponent, canActivate: [authguard] },
+  { path: 'payment/success', component: PaymentSuccessComponent, canActivate: [authguard] },
 
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/login'}
@@ -79,6 +81,7 @@ export const appRoutes: Routes = [
     CalendarCallbackComponent,
     ScheduleComponent,
     UpgradeComponent,
+    PaymentSuccessComponent,
   ],
   imports: [
     BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes), MaterialModule, SafeResourceUrlPipe,

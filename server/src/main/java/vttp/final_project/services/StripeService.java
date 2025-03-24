@@ -4,7 +4,9 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import com.stripe.model.Customer;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.checkout.Session;
 import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +23,37 @@ public class StripeService {
         return stripePublicKey;
     }
 
-    public PaymentIntent createPaymentIntent(String email, Long amount) throws StripeException {
-        // Amount is in cents
-        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount(amount)
-                .setCurrency("usd")
-                .setReceiptEmail(email)
+    public Session createCheckoutSession(String email, long amount, String productName, String successUrl, String cancelUrl) throws StripeException {
+        // Create a new Checkout Session for the order
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setCustomerEmail(email)
+                .setSuccessUrl(successUrl + "?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl(cancelUrl)
+                .addLineItem(
+                        SessionCreateParams.LineItem.builder()
+                                .setQuantity(1L)
+                                .setPriceData(
+                                        SessionCreateParams.LineItem.PriceData.builder()
+                                                .setCurrency("usd")
+                                                .setUnitAmount(amount) // amount in cents
+                                                .setProductData(
+                                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                .setName(productName)
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .build()
+                )
                 .build();
 
-        return PaymentIntent.create(params);
+        return Session.create(params);
     }
 
-    public Customer createCustomer(String email, String token) throws StripeException {
-        Map<String, Object> customerParams = new HashMap<>();
-        customerParams.put("email", email);
-        customerParams.put("source", token);
-        return Customer.create(customerParams);
-    }
-
-    public Charge chargeNewCard(String token, Long amount) throws StripeException {
-        Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", amount);
-        chargeParams.put("currency", "usd");
-        chargeParams.put("source", token);
-        return Charge.create(chargeParams);
+    public boolean verifyPaymentSuccess(String sessionId) throws StripeException {
+        Session session = Session.retrieve(sessionId);
+        return "complete".equals(session.getStatus()) || "paid".equals(session.getPaymentStatus());
     }
 }
+

@@ -39,31 +39,22 @@
       </div>
     </div>
 
-    <div class="payment-section">
-      <h3>Payment Information</h3>
+    @if (errorMessage) {
+      <mat-error class="error-message">{{ errorMessage }}</mat-error>
+    }
 
-      <div id="card-element" class="card-element">
-        <!-- Stripe Card Element will be inserted here -->
-      </div>
-      <div id="card-errors" class="card-errors" role="alert"></div>
-
-      @if (errorMessage) {
-        <mat-error>{{ errorMessage }}</mat-error>
+    <button
+      mat-raised-button
+      color="primary"
+      class="submit-button"
+      (click)="handleCheckout()"
+      [disabled]="loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner> Processing...
+      } @else {
+        Proceed to Checkout
       }
-
-      <button
-        mat-raised-button
-        color="primary"
-        class="submit-button"
-        (click)="handleSubmit()"
-        [disabled]="loading">
-        @if (loading) {
-          <mat-spinner diameter="20"></mat-spinner> Processing...
-        } @else {
-          Upgrade Now
-        }
-      </button>
-    </div>
+    </button>
 
     <div class="security-info">
       <mat-icon>lock</mat-icon>

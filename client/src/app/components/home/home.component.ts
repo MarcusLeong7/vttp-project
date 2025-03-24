@@ -22,7 +22,7 @@ export class HomeComponent {
   }
 
   navigateToCalendar(): void {
-    this.router.navigate(['/schedule/calendar']);
+    this.router.navigate(['/schedule']);
   }
 
 }

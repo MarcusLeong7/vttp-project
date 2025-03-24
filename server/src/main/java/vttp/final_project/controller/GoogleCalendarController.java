@@ -38,7 +38,7 @@ public class GoogleCalendarController {
     private UserService userSvc;
 
     @Autowired
-    private UserSqlRepository  userSqlRepo;
+    private UserSqlRepository userSqlRepo;
 
     @PostMapping("/connect")
     public ResponseEntity<String> connectToGoogle(@RequestBody GoogleAuthRequest req, Principal principal) {
@@ -101,6 +101,21 @@ public class GoogleCalendarController {
 
             return ResponseEntity.ok("{\"status\":\"success\",\"message\":\"Meal plan added to calendar\"}");
         } catch (Exception e) {
+            // Check if this is a token expired error
+            if (e.getMessage().contains("Token has been expired or revoked") ||
+                e.getMessage().contains("invalid_grant") ||
+                e.getMessage().contains("connection expired")) {
+
+                // Clear the stored tokens so the user can reconnect
+                userSqlRepo.updateGoogleTokens(principal.getName(), null, null, null);
+
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Your Google Calendar connection has expired. Please reconnect.")
+                        .add("requiresReconnect", true)
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+            }
             // Log the detailed error
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -170,6 +185,21 @@ public class GoogleCalendarController {
 
             return ResponseEntity.ok(arrayBuilder.build().toString());
         } catch (Exception e) {
+            // Check if this is a token expired error
+            if (e.getMessage().contains("Token has been expired or revoked") ||
+                e.getMessage().contains("invalid_grant")) {
+
+                // Clear the stored tokens
+                userSqlRepo.updateGoogleTokens(principal.getName(), null, null, null);
+
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Your Google Calendar connection has expired. Please reconnect.")
+                        .add("requiresReconnect", true)
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+            }
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
@@ -183,6 +213,15 @@ public class GoogleCalendarController {
         }
 
         try {
+            // Check if user has Google tokens
+            User user = userSqlRepo.findByEmail(principal.getName());
+            if (user.getGoogleRefreshToken() == null) {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "User not connected to Google Calendar")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+            }
             // Primary calendar ID is often the user's email
             String calendarId = principal.getName();
 
@@ -194,6 +233,21 @@ public class GoogleCalendarController {
 
             return ResponseEntity.ok(response.toString());
         } catch (Exception e) {
+            // Check if this is a token expired error
+            if (e.getMessage().contains("Token has been expired or revoked") ||
+                e.getMessage().contains("invalid_grant")) {
+
+                // Clear the stored tokens
+                userSqlRepo.updateGoogleTokens(principal.getName(), null, null, null);
+
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Your Google Calendar connection has expired. Please reconnect.")
+                        .add("requiresReconnect", true)
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
+            }
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
         }

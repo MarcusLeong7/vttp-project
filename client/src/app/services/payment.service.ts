@@ -13,12 +13,12 @@ export class PaymentService {
     return this.http.get('/api/payment/config');
   }
 
-  createPaymentIntent(priceId: string): Observable<any> {
-    return this.http.post('/api/payment/create-payment-intent', { priceId });
+  createCheckoutSession(priceId: string): Observable<any> {
+    return this.http.post('/api/payment/create-checkout-session', { priceId });
   }
 
-  confirmPaymentSuccess(): Observable<any> {
-    return this.http.post('/api/payment/payment-success', {});
+  verifyPaymentSuccess(sessionId: string): Observable<any> {
+    return this.http.get(`/api/payment/verify-payment?session_id=${sessionId}`);
   }
 
 

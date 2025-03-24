@@ -21,28 +21,15 @@ export class UpgradeComponent implements OnInit {
 
   // Component properties
   loading = false;
-  stripe: any;
-  card: any;
   errorMessage = '';
   selectedPlan = 'premium'; // Default plan
 
   ngOnInit(): void {
+    // Get Stripe public key
     this.paymentSvc.getStripeConfig().subscribe(
       (response) => {
-        this.stripe = Stripe(response.publicKey);
-        const elements = this.stripe.elements();
-        this.card = elements.create('card');
-        this.card.mount('#card-element');
-
-        // Handle card validation errors
-        this.card.on('change', (event: any) => {
-          const displayError = document.getElementById('card-errors');
-          if (event.error && displayError) {
-            displayError.textContent = event.error.message;
-          } else if (displayError) {
-            displayError.textContent = '';
-          }
-        });
+        // Store the public key if needed
+        console.log('Stripe configuration loaded');
       },
       (error) => {
         this.errorMessage = 'Failed to load payment processor';
@@ -51,43 +38,20 @@ export class UpgradeComponent implements OnInit {
     );
   }
 
-  async handleSubmit() {
+  handleCheckout() {
     this.loading = true;
 
-    try {
-      // Create payment intent on the server
-      const response = await firstValueFrom(this.paymentSvc.createPaymentIntent(this.selectedPlan));
-
-      // Confirm card payment
-      const result = await this.stripe.confirmCardPayment(response.clientSecret, {
-        payment_method: {
-          card: this.card,
-          billing_details: {
-            // You can collect these details from the user if needed
-          }
-        }
-      });
-
-      if (result.error) {
-        // Show error message
-        this.errorMessage = result.error.message;
+    this.paymentSvc.createCheckoutSession(this.selectedPlan).subscribe(
+      (response) => {
+        // Redirect to Stripe Checkout
+        window.location.href = response.url;
+      },
+      (error) => {
         this.loading = false;
-      } else {
-        if (result.paymentIntent.status === 'succeeded') {
-          // Payment successful
-          await this.paymentSvc.confirmPaymentSuccess().toPromise();
-          this.snackBar.open('Upgrade successful! You now have premium access.', 'Close', {
-            duration: 5000
-          });
-          this.router.navigate(['/home']);
-        }
+        this.errorMessage = 'Error creating checkout session: ' + (error.message || 'Unknown error');
+        console.error('Payment error:', error);
       }
-    } catch (error) {
-      console.error('Payment error:', error);
-      this.errorMessage = 'An error occurred during payment processing';
-    } finally {
-      this.loading = false;
-    }
+    );
   }
 
   selectPlan(plan: string) {

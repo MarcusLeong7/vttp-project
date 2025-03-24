@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MealPlanService} from '../../services/meal.plan.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -11,7 +11,7 @@ import {PremiumService} from '../../services/premium.service';
   templateUrl: './meal-plan-detail.component.html',
   styleUrl: './meal-plan-detail.component.css'
 })
-export class MealPlanDetailComponent {
+export class MealPlanDetailComponent implements OnInit {
 
   // Inject dependencies
   private router = inject(Router);
@@ -176,7 +176,6 @@ export class MealPlanDetailComponent {
     this.router.navigate(['/meal-plans']);
   }
 
-
   // Add to google calendar
   addToCalendar(): void {
     this.isLoading = true;
@@ -198,14 +197,28 @@ export class MealPlanDetailComponent {
             console.error('Server error message:', err.error.message);
           }
 
+          // Check for token expiration specific error
+          const errorMessage = err.error?.message || '';
+          if (errorMessage.includes('Token has been expired') ||
+            errorMessage.includes('invalid_grant') ||
+            errorMessage.includes('connection expired') ||
+            err.error?.requiresReconnect) {
+
+            this.snackBar.open('Your Google Calendar connection has expired', 'Reconnect', {
+              duration: 10000
+            }).onAction().subscribe(() => {
+              this.calendarService.initiateGoogleAuth();
+            });
+          }
           // If the user hasn't connected their Google account yet
-          if (err.status === 401 || err.status === 403) {
+          else if (err.status === 401 || err.status === 403) {
             this.snackBar.open('You need to connect to Google Calendar first', 'Connect', {
               duration: 5000
             }).onAction().subscribe(() => {
               this.calendarService.initiateGoogleAuth();
             });
-          } else {
+          }
+          else {
             this.snackBar.open('Failed to add to calendar. Please try again.', 'Close', {
               duration: 3000
             });

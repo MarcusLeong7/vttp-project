@@ -3,9 +3,11 @@ package vttp.final_project.controller;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.checkout.Session;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class StripeController {
     @Autowired
     private UserSqlRepository userSqlRepo;
 
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
+
     @GetMapping("/config")
     public ResponseEntity<String> getPublicKey() {
         JsonObject response = Json.createObjectBuilder()
@@ -33,8 +38,8 @@ public class StripeController {
         return ResponseEntity.ok(response.toString());
     }
 
-    @PostMapping("/create-payment-intent")
-    public ResponseEntity<String> createPaymentIntent(@RequestBody Map<String, Object> payload, Principal principal) {
+    @PostMapping("/create-checkout-session")
+    public ResponseEntity<String> createCheckoutSession(@RequestBody Map<String, Object> payload, Principal principal) {
         if (principal == null) {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")
@@ -46,18 +51,24 @@ public class StripeController {
         String email = principal.getName();
         String priceId = (String) payload.get("priceId");
 
-        // Set the amount based on the subscription tier
-        Long amount = "premium".equals(priceId) ? 999L : 1999L;  // $9.99 or $19.99
+        // Determine the price based on the selected plan
+        String priceName = "premium".equals(priceId) ? "Monthly Premium" : "Annual Premium";
+        long amount = "premium".equals(priceId) ? 999 : 1999;  // $9.99 or $19.99
 
         try {
-            PaymentIntent intent = stripeService.createPaymentIntent(email, amount);
-
-            // Set isPremium flag to true in database after successful payment
-            // This would normally be done after payment confirmation, but we're setting it here for simplicity
-            userSqlRepo.updatePremiumStatus(email, true);
+            // Create checkout session
+            Session session = stripeService.createCheckoutSession(
+                    email,
+                    amount,
+                    priceName,
+                    frontendUrl + "/payment/success",
+                    frontendUrl + "/payment/cancel"
+            );
 
             JsonObject response = Json.createObjectBuilder()
-                    .add("clientSecret", intent.getClientSecret())
+                    .add("status", "success")
+                    .add("sessionId", session.getId())
+                    .add("url", session.getUrl())
                     .build();
 
             return ResponseEntity.ok(response.toString());
@@ -70,8 +81,8 @@ public class StripeController {
         }
     }
 
-    @PostMapping("/payment-success")
-    public ResponseEntity<String> paymentSuccess(@RequestBody Map<String, Object> payload, Principal principal) {
+    @GetMapping("/verify-payment")
+    public ResponseEntity<String> verifyPayment(@RequestParam("session_id") String sessionId, Principal principal) {
         if (principal == null) {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")
@@ -80,17 +91,35 @@ public class StripeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.toString());
         }
 
-        String email = principal.getName();
+        try {
+            String email = principal.getName();
+            boolean verified = stripeService.verifyPaymentSuccess(sessionId);
 
-        // Update user to premium status in database
-        userSqlRepo.updatePremiumStatus(email, true);
+            if (verified) {
+                // Update user to premium status in database
+                userSqlRepo.updatePremiumStatus(email, true);
 
-        JsonObject response = Json.createObjectBuilder()
-                .add("status", "success")
-                .add("message", "Payment successful and premium status updated")
-                .build();
+                JsonObject response = Json.createObjectBuilder()
+                        .add("status", "success")
+                        .add("message", "Payment successful and premium status updated")
+                        .build();
 
-        return ResponseEntity.ok(response.toString());
+                return ResponseEntity.ok(response.toString());
+            } else {
+                JsonObject error = Json.createObjectBuilder()
+                        .add("status", "error")
+                        .add("message", "Payment verification failed")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.toString());
+            }
+        } catch (StripeException e) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("status", "error")
+                    .add("message", e.getMessage())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error.toString());
+        }
     }
+
 
 }

@@ -2,6 +2,7 @@ package vttp.final_project.services;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -191,8 +192,15 @@ public class GoogleCalendarService {
                     new TokenResponse().setRefreshToken(refreshToken), null);
 
             return credential;
+        } catch (TokenResponseException e) {
+            // Handle expired or revoked token
+            if (e.getMessage().contains("invalid_grant")) {
+                throw new RuntimeException("Google Calendar connection expired. Please reconnect.", e);
+            }
+            throw new RuntimeException("Failed to create credentials", e);
         } catch (IOException e) {
             throw new RuntimeException("Failed to create credentials", e);
         }
     }
+
 }
