@@ -40,7 +40,7 @@ RUN ./mvnw package -Dmaven.test.skip=true
 FROM openjdk:23-jdk-slim
 
 WORKDIR /app
-COPY --from=j-build /src/target/server-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=j-build /src/target/final-project-0.0.1-SNAPSHOT.jar app.jar
 
 ENV SERVER_PORT=8080
 # Redis

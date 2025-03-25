@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import vttp.final_project.configuration.jwtToken.JwtFilter;
 
 @Configuration
@@ -42,15 +44,23 @@ public class SecurityConfig {
 
                 // Configure request authorization
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(  "/", "/index.html", "/favicon.ico",
+                                "/assets/**",
+                                "/styles*.css", "/main*.js", "/runtime*.js",
+                                "/polyfills*.js", "/scripts*.js","/gym.jpg","/manifest.json",
+                                "/**.png", "/**.jpg", "/**.jpeg","/icons/**"
+                        ).permitAll()
                         // Public endpoints that don't require authentication
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/meals/{id}/recipe").permitAll() // Specifically allow recipe endpoints
+                        .requestMatchers("/api/meals/*/recipe").permitAll() // Specifically allow recipe endpoints
 
                         // Protected endpoints that require authentication
                         .requestMatchers("/api/meals/**").authenticated()
                         .requestMatchers("/api/mealplans/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
                         .requestMatchers("/api/calendar/**").authenticated()
+                        .requestMatchers("/api/payment/**").authenticated()
+                        .requestMatchers("/api/workouts/**").authenticated()
                         .anyRequest().authenticated()
                 )
 
@@ -59,4 +69,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

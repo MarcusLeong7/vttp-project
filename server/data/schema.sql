@@ -44,7 +44,35 @@ create table if not exists meal_plan_items(
     meal_type varchar(50),  -- breakfast, lunch, dinner, snack
     constraint pk_mealplan_item_id primary key (id),
     constraint fk_mealplan_id foreign key (meal_plan_id) references meal_plans(id) on delete cascade
-);)
+);
 
-grant all privileges on project.* to 'fred'@'%';
-flush privileges;
+CREATE TABLE user_health_data (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    height DECIMAL(5,2) COMMENT 'Height in cm',
+    weight DECIMAL(5,2) COMMENT 'Weight in kg',
+    age INT,
+    gender VARCHAR(20),
+    activity_level VARCHAR(50) COMMENT 'Sedentary, Lightly Active, Moderately Active, Very Active, Extra Active',
+    fitness_goal VARCHAR(50) COMMENT 'Weight Loss, Maintenance, Muscle Gain, etc.',
+    bmi DECIMAL(4,2),
+    bmr INT COMMENT 'Basal Metabolic Rate in calories',
+    tdee INT COMMENT 'Total Daily Energy Expenditure in calories',
+    
+    PRIMARY KEY (id),
+    CONSTRAINT fk_health_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT unique_user_health UNIQUE (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS weight_logs (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    weight DECIMAL(5,2) NOT NULL, 
+    date DATE NOT NULL,
+    notes TEXT,
+    
+    CONSTRAINT pk_weightlog_id PRIMARY KEY(id),
+    CONSTRAINT fk_user_id_int FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT unique_user_date UNIQUE (user_id, date)
+);
+
