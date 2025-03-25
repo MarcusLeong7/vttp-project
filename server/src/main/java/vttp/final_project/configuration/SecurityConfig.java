@@ -51,6 +51,7 @@ public class SecurityConfig {
                                 "/**.png", "/**.jpg", "/**.jpeg","/icons/**"
                         ).permitAll()
                         // Public endpoints that don't require authentication
+                        .requestMatchers("/calendar/callback").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/meals/*/recipe").permitAll() // Specifically allow recipe endpoints
 

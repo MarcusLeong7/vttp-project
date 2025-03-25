@@ -10,12 +10,12 @@ export class CalendarService {
   // Dependency Injection
   private http = inject(HttpClient);
 
-// Start the Google OAuth flow
+  // Start the Google OAuth flow
   initiateGoogleAuth(): void {
     // Use the client ID you registered in Google Cloud Console
     const clientId = '949519111790-96f87b032ij89kuo4tq62vlppb2d00er.apps.googleusercontent.com';
     // This must match the authorized redirect URI in Google Cloud Console
-    const redirectUri = window.location.origin + '/calendar/callback';
+    const redirectUri = window.location.origin + '/calendar/callback'; // Remove the hash part
     const scope = 'https://www.googleapis.com/auth/calendar';
 
     // Construct the authorization URL

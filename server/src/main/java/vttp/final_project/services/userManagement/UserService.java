@@ -112,6 +112,8 @@ public class UserService {
         try {
             System.out.println("Exchanging auth code for tokens");
 
+            String redirectUri = "https://nutrisense.up.railway.app/calendar/callback";
+
             // Create GoogleTokenResponse from authCode
             GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
                     new NetHttpTransport(),
