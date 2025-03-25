@@ -92,7 +92,7 @@ export const appRoutes: Routes = [
     UserProfileComponent,
   ],
   imports: [
-    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes),
+    BrowserModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes,{ useHash: true }),
     MaterialModule, SafeResourceUrlPipe, PrimeNgModule
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),

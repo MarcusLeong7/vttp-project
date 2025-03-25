@@ -1,6 +1,7 @@
 package vttp.final_project.controller;
 
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
@@ -40,6 +41,9 @@ public class StripeController {
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<String> createCheckoutSession(@RequestBody Map<String, Object> payload, Principal principal) {
+        if (Stripe.apiKey == null || Stripe.apiKey.isEmpty()) {
+            throw new RuntimeException("Stripe API key is not configured properly");
+        }
         if (principal == null) {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")
@@ -60,9 +64,7 @@ public class StripeController {
             Session session = stripeService.createCheckoutSession(
                     email,
                     amount,
-                    priceName,
-                    frontendUrl + "/payment/success",
-                    frontendUrl + "/payment/cancel"
+                    priceName
             );
 
             JsonObject response = Json.createObjectBuilder()

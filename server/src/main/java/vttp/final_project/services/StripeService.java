@@ -19,17 +19,20 @@ public class StripeService {
     @Value("${stripe.public.key}")
     private String stripePublicKey;
 
+    @Value("${app.frontend.url}")
+    private String baseUrl;
+
     public String getPublicKey() {
         return stripePublicKey;
     }
 
-    public Session createCheckoutSession(String email, long amount, String productName, String successUrl, String cancelUrl) throws StripeException {
+    public Session createCheckoutSession(String email, long amount, String productName) throws StripeException {
         // Create a new Checkout Session for the order
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(email)
-                .setSuccessUrl(successUrl + "?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl(cancelUrl)
+                .setSuccessUrl(baseUrl + "/#/payment/success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl(baseUrl)
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setQuantity(1L)

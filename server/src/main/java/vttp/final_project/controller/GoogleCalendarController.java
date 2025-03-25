@@ -9,6 +9,7 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/calendar")
 public class GoogleCalendarController {
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     @Autowired
     private GoogleCalendarService calendarSvc;
@@ -252,4 +256,5 @@ public class GoogleCalendarController {
                     .body("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
         }
     }
+
 }

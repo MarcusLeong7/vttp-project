@@ -10,7 +10,7 @@ public class RailwayConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://fulfilling-spirit-production-6d45.up.railway.app")
+                .allowedOrigins("https://nutrisense.up.railway.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

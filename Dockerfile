@@ -41,6 +41,8 @@ FROM openjdk:23-jdk-slim
 
 WORKDIR /app
 COPY --from=j-build /src/target/final-project-0.0.1-SNAPSHOT.jar app.jar
+# Copy data directory to final container - ADD THIS LINE
+COPY --from=j-build /src/data /app/data
 
 ENV SERVER_PORT=8080
 # Redis
