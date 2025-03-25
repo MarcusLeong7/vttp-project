@@ -35,7 +35,6 @@ import { UpgradeComponent } from './components/upgrade/upgrade.component';
 import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import {UserProfileService} from './services/user-profile.service';
-import {ChartModule} from 'primeng/chart';
 import {WeightLogService} from './services/weight-log.service';
 import {PremiumService} from './services/premium.service';
 import {PrimeNgModule} from './angular-material/PrimeNg.module';
@@ -98,7 +97,7 @@ export const appRoutes: Routes = [
   ],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor])),
     AuthService, MealService,MealPlanService,WorkoutService,
-    CalendarService,PaymentService,UserProfileService,WeightLogService,PremiumService,MealPlanService],
+    CalendarService,PaymentService,UserProfileService,WeightLogService,PremiumService,MealStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,5 +1,4 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {MealService} from '../../services/meal.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Meal} from '../../models/Meal/Meal';
