@@ -28,16 +28,17 @@ export class HomeComponent implements OnInit {
   chartData: any;
   chartOptions: any;
 
-  constructor() {
-    this.weightForm = this.fb.group({
-      weight: ['', [Validators.required, Validators.min(20), Validators.max(200)]],
-      notes: ['']
-    });
-  }
-
   ngOnInit(): void {
+    this.weightForm = this.createForm();
     this.loadWeightLogs();
     this.initChartOptions();
+  }
+
+  private createForm() {
+    return this.fb.group({
+      weight: ['', [Validators.required, Validators.min(20), Validators.max(150)]],
+      notes: ['']
+    })
   }
 
   loadWeightLogs(): void {
@@ -56,104 +57,6 @@ export class HomeComponent implements OnInit {
         console.error('Error loading weight logs:', err);
       }
     });
-  }
-
-  prepareChartData(): void {
-    if (this.weightLogs.length === 0) {
-      return;
-    }
-
-    // Sort logs by date (oldest to newest)
-    const sortedLogs = [...this.weightLogs].sort((a, b) =>
-      new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
-    const labels = sortedLogs.map(log => {
-      const date = new Date(log.date);
-      return date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
-    });
-
-    const weightData = sortedLogs.map(log => log.weight);
-
-    this.chartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Weight (kg)',
-          data: weightData,
-          fill: false,
-          borderColor: '#4bc0c0',
-          tension: 0.4,
-          pointBackgroundColor: '#4bc0c0',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#4bc0c0'
-        }
-      ]
-    };
-  }
-
-  initChartOptions(): void {
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            font: {
-              family: 'Roboto, "Helvetica Neue", sans-serif',
-              size: 12
-            }
-          }
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false
-        }
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Date'
-          },
-          ticks: {
-            color: '#495057'
-          },
-          grid: {
-            color: '#ebedef'
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Weight (kg)'
-          },
-          ticks: {
-            color: '#495057'
-          },
-          grid: {
-            color: '#ebedef'
-          }
-        }
-      },
-      layout: {
-        padding: 10
-      },
-      // Additional responsive settings
-      elements: {
-        line: {
-          tension: 0.4
-        },
-        point: {
-          radius: 4,
-          hitRadius: 10,
-          hoverRadius: 6
-        }
-      }
-    };
   }
 
   logWeight(): void {
@@ -211,6 +114,166 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  prepareChartData(): void {
+    if (this.weightLogs.length === 0) {
+      return;
+    }
+
+    // Sort logs by date (oldest to newest)
+    const sortedLogs = [...this.weightLogs].sort((a, b) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+    const labels = sortedLogs.map(log => {
+      const date = new Date(log.date);
+      return date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+    });
+    const weightData = sortedLogs.map(log => log.weight);
+
+    // Create a proper dataset with enhanced styling
+    this.chartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Weight (kg)',
+          data: weightData,
+          fill: true,
+          backgroundColor: 'rgba(151, 187, 205, 0.2)',
+          borderColor: 'rgba(151, 187, 205, 1)',
+          borderWidth: 2,
+          tension: 0.4,
+          pointRadius: 5,
+          pointBackgroundColor: 'rgba(151, 187, 205, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(151, 187, 205, 1)',
+          pointHoverBorderWidth: 2
+        }
+      ]
+    };
+  }
+
+  initChartOptions(): void {
+    // Calculate appropriate min and max with buffer
+    const minWeight = this.getMinWeight();
+    const maxWeight = this.getMaxWeight();
+    const range = maxWeight - minWeight;
+    const buffer = Math.max(5, range * 0.2);
+
+    this.chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#495057',
+            font: {
+              weight: 'bold'
+            }
+          }
+        },
+        tooltip: {
+          mode: 'nearest',
+          intersect: false,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          borderColor: 'rgba(151, 187, 205, 1)',
+          borderWidth: 1,
+          padding: 10,
+          titleFont: {
+            size: 14,
+            weight: 'bold'
+          },
+          bodyFont: {
+            size: 13
+          },
+          displayColors: false,
+          callbacks: {
+            label: function(context: {raw: number}) {
+              return `Weight: ${context.raw} kg`;
+            }
+          }
+        }
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: false
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date',
+            color: '#495057',
+            font: {
+              weight: 'bold'
+            }
+          },
+          ticks: {
+            color: '#495057',
+            font: {
+              weight: 'bold'
+            },
+            maxRotation: 50
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.1)',
+            display: true,
+            drawBorder: true
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Weight (kg)',
+            color: '#495057',
+            font: {
+              weight: 'bold'
+            }
+          },
+          min: Math.max(0, minWeight - buffer),
+          max: maxWeight + buffer,
+          ticks: {
+            color: '#495057',
+            font: {
+              weight: 'bold'
+            },
+            precision: 0,
+            stepSize: this.calculateStepSize(minWeight, maxWeight)
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.1)',
+            display: true,
+            drawBorder: true
+          }
+        }
+      },
+      animation: {
+        duration: 1000,
+        easing: 'easeInOutQuart'
+      }
+    };
+  }
+
+  // Helper methods
+  getMinWeight(): number {
+    if (this.weightLogs.length === 0) return 50;
+    return Math.floor(Math.min(...this.weightLogs.map(log => log.weight)));
+  }
+  getMaxWeight(): number {
+    if (this.weightLogs.length === 0) return 100;
+    return Math.ceil(Math.max(...this.weightLogs.map(log => log.weight)));
+  }
+  calculateStepSize(min: number, max: number): number {
+    const range = max - min;
+    if (range <= 10) return 1;
+    if (range <= 20) return 2;
+    if (range <= 40) return 5;
+    return 10;
+  }
+
   // Navigation methods for the three main features
   navigateToMealSearch(): void {
     this.router.navigate(['/meals/search']);
@@ -223,5 +286,7 @@ export class HomeComponent implements OnInit {
   navigateToCalendar(): void {
     this.router.navigate(['/schedule']);
   }
+
+
 
 }

@@ -215,10 +215,21 @@
 }
 
 .chart-container {
-  height: 300px;
-  width: 100%;
-  position: relative;
-  margin-bottom: 20px;
+  height: 200px;
+  padding: 20px 10px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chart-container:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+.chart-container canvas {
+  border-radius: 4px;
+  max-height: 100%;
 }
 
 .loading-container {
@@ -270,8 +281,16 @@
 }
 
 /* These styles will apply directly to PrimeNG components */
+.p-chart {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .p-chart canvas {
-  border-radius: 4px;
+  border-radius: 12px;
+  max-height: 100%;
+  background: linear-gradient(135deg, #f3f7ff, #ffffff); /* Subtle background */
 }
 
 /* PrimeNG Table styling */
@@ -325,7 +344,8 @@
   }
 
   .chart-container {
-    height: 250px; /* Slightly smaller on mobile */
+    height: 300px;
+    margin-bottom: 20px;
   }
 }
 
@@ -341,6 +361,31 @@
 .weight-chart-card:hover, .log-weight-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.log-weight-card mat-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds vertical spacing between elements */
+}
+
+.log-weight-card mat-form-field {
+  margin-bottom: 16px;
+}
+
+.log-weight-card .submit-button {
+  margin-top: 24px;
+}
+.log-weight-card textarea {
+  min-height: 80px;
+}
+.log-weight-card .mat-form-field-wrapper {
+  padding-bottom: 1.5em;
+}
+.log-weight-card mat-card-header {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 /* Weight history table heading */

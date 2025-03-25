@@ -106,7 +106,7 @@
                   type="line"
                   [data]="chartData"
                   [options]="chartOptions"
-                  [style]="{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%'}"
+                  [style]="{'width': '100%', 'height': '100%'}"
                 ></p-chart>
               </div>
             }
@@ -114,7 +114,7 @@
             <!-- Weight History Table - Add this here -->
             <div class="weight-history-table" *ngIf="weightLogs.length > 0">
               <h4>Weight History</h4>
-              <p-table [value]="sortedWeightLogs" [rows]="5" [paginator]="true" styleClass="p-datatable-sm">
+              <p-table [value]="sortedWeightLogs" [rows]="3" [paginator]="true" styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
                   <tr>
                     <th>Date</th>
@@ -157,7 +157,7 @@
                   <mat-error>Weight must be at least 20 kg</mat-error>
                 }
                 @if (weightForm.get('weight')?.hasError('max')) {
-                  <mat-error>Weight must be less than 500 kg</mat-error>
+                  <mat-error>Weight must be less than 150 kg</mat-error>
                 }
               </mat-form-field>
 
@@ -183,31 +183,3 @@
   </div>
 </div>
 
-
-<!-- Quick Stats Section -->
-<!--    <div class="stats-section">-->
-<!--      <h3 class="section-title mat-headline-5">Your Progress</h3>-->
-
-<!--      <div class="stats-grid">-->
-<!--        <mat-card class="stat-card">-->
-<!--          <mat-card-content>-->
-<!--            <h5 class="mat-subtitle-1">Meals Planned</h5>-->
-<!--            <p class="stat-value">0</p>-->
-<!--          </mat-card-content>-->
-<!--        </mat-card>-->
-
-<!--        <mat-card class="stat-card">-->
-<!--          <mat-card-content>-->
-<!--            <h5 class="mat-subtitle-1">Workouts Completed</h5>-->
-<!--            <p class="stat-value">0</p>-->
-<!--          </mat-card-content>-->
-<!--        </mat-card>-->
-
-<!--        <mat-card class="stat-card">-->
-<!--          <mat-card-content>-->
-<!--            <h5 class="mat-subtitle-1">Wellness Streak</h5>-->
-<!--            <p class="stat-value">0 days</p>-->
-<!--          </mat-card-content>-->
-<!--        </mat-card>-->
-<!--      </div>-->
-<!--    </div>-->
