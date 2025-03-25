@@ -32,7 +32,7 @@ public class StripeService {
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setCustomerEmail(email)
                 .setSuccessUrl(baseUrl + "/#/payment/success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl(baseUrl)
+                .setCancelUrl(baseUrl + "/#/payment/cancel")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setQuantity(1L)

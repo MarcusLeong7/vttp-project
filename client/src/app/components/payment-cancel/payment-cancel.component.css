@@ -1,0 +1,61 @@
+.payment-result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px);
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+}
+
+.result-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.cancel-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.cancel-icon mat-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+  color: #f44336;
+}
+
+h2 {
+  margin-bottom: 16px;
+  color: #333;
+}
+
+p {
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+@media (max-width: 600px) {
+  .result-card {
+    padding: 24px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .button-container button {
+    width: 100%;
+  }
+}

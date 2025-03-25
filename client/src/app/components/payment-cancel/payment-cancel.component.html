@@ -1,0 +1,14 @@
+<div class="payment-result-container">
+  <div class="result-card mat-elevation-z2">
+    <div class="cancel-icon">
+      <mat-icon>cancel</mat-icon>
+    </div>
+    <h2>Payment Cancelled</h2>
+    <p>Your payment process was cancelled or interrupted.</p>
+    <p>No charges have been made to your account.</p>
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="redirectToUpgrade()">Try Again</button>
+      <button mat-stroked-button (click)="redirectToHome()">Return to Home</button>
+    </div>
+  </div>
+</div>

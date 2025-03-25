@@ -38,6 +38,7 @@ import {UserProfileService} from './services/user-profile.service';
 import {WeightLogService} from './services/weight-log.service';
 import {PremiumService} from './services/premium.service';
 import {PrimeNgModule} from './angular-material/PrimeNg.module';
+import { PaymentCancelComponent } from './components/payment-cancel/payment-cancel.component';
 
 export const appRoutes: Routes = [
   // Auth routes
@@ -62,6 +63,7 @@ export const appRoutes: Routes = [
   // Upgrade Payment Component
   { path: 'upgrade', component: UpgradeComponent, canActivate: [authguard] },
   { path: 'payment/success', component: PaymentSuccessComponent, canActivate: [authguard] },
+  { path: 'payment/cancel', component: PaymentCancelComponent, canActivate: [authguard] },
   // User Profile Component
   { path: 'profile', component: UserProfileComponent, canActivate: [authguard] },
 
@@ -89,6 +91,7 @@ export const appRoutes: Routes = [
     ScheduleComponent,
     UpgradeComponent,
     PaymentSuccessComponent,
+    PaymentCancelComponent,
     UserProfileComponent,
   ],
   imports: [
