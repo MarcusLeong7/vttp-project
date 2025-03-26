@@ -90,6 +90,12 @@
   margin-right: 8px;
 }
 
+.nav-items {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap; /* Prevent wrapping */
+}
+
 /* Responsive adjustments */
 @media (max-width: 960px) {
   .user-email {
@@ -163,46 +169,22 @@
   }
 }
 
-/* Add a class for mobile menu toggle */
-.mobile-menu-button {
-  display: none;
-}
 
 @media (max-width: 480px) {
-  .mobile-menu-button {
-    display: block;
-  }
-
+  /* Add these lines instead */
   .nav-items {
-    display: none;
-  }
-
-  .nav-items.show-mobile {
     display: flex;
-    position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background-color: #1a5276;
-    padding: 8px 0;
-    z-index: 100;
   }
 
-  .nav-items.show-mobile a,
-  .nav-items.show-mobile button {
-    text-align: left;
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 0;
+  .nav-items a,
+  .nav-items button {
+    min-width: 36px;
+    padding: 0 4px;
+    margin-left: 2px;
   }
 
-  .nav-items.show-mobile span {
-    display: inline-block;
-  }
-
-  .nav-items.show-mobile .mat-icon {
-    margin-right: 8px;
+  .brand-name {
+    display: none;
   }
 }
 

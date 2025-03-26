@@ -14,8 +14,6 @@ export class HeaderComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  showMobileMenu = false;
-
   get currentUser(): User | null {
     return this.authService.currentUserValue;
   }
@@ -29,7 +27,5 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
-  toggleMobileMenu(): void {
-    this.showMobileMenu = !this.showMobileMenu;
-  }
+
 }
