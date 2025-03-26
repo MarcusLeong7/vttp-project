@@ -16,6 +16,7 @@ public class StripeConfig {
         System.out.println("Initializing Stripe with API key: " +
                            (stripeApiKey != null && !stripeApiKey.isEmpty() ?
                                    stripeApiKey.substring(0, 5) + "..." : "NOT SET"));
+        // Set my Stripe ApiKey into Stripe's SDK
         Stripe.apiKey = stripeApiKey;
     }
 }

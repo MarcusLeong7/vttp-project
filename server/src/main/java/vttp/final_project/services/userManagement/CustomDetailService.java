@@ -10,7 +10,7 @@ import vttp.final_project.repository.user.UserSqlRepository;
 
 @Service
 public class CustomDetailService implements UserDetailsService {
-
+    /* Implements UserDetailsService interface from Spring Security*/
     @Autowired
     private UserSqlRepository userSqlRepo;
 
@@ -21,7 +21,7 @@ public class CustomDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-
+        // Convert User object to Spring Security's UserDetails object
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword()) // Ensure password is hashed

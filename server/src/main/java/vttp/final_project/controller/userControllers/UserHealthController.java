@@ -64,43 +64,37 @@ public class UserHealthController {
 
         try {
             String email = principal.getName();
-
             // Parse data from payload
             UserHealthData healthData = new UserHealthData();
 
             if (payload.get("height") != null) {
                 healthData.setHeight(new BigDecimal(payload.get("height").toString()));
             }
-
             if (payload.get("weight") != null) {
                 healthData.setWeight(new BigDecimal(payload.get("weight").toString()));
             }
-
             if (payload.get("age") != null) {
                 healthData.setAge(Integer.parseInt(payload.get("age").toString()));
             }
-
             if (payload.get("gender") != null) {
                 healthData.setGender(payload.get("gender").toString());
             }
-
             if (payload.get("activityLevel") != null) {
                 healthData.setActivityLevel(payload.get("activityLevel").toString());
             }
-
             if (payload.get("fitnessGoal") != null) {
                 healthData.setFitnessGoal(payload.get("fitnessGoal").toString());
             }
-
             // Save the health data
             UserHealthData savedData = userHealthService.saveUserHealthData(email, healthData);
 
-            JsonObjectBuilder builder = Json.createObjectBuilder()
+            JsonObject resp = Json.createObjectBuilder()
                     .add("status", "success")
                     .add("message", "Health data saved successfully")
-                    .add("healthData", healthDataToJson(savedData));
+                    .add("healthData", healthDataToJson(savedData))
+                    .build();
 
-            return ResponseEntity.ok(builder.build().toString());
+            return ResponseEntity.ok(resp.toString());
         } catch (Exception e) {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")
@@ -124,11 +118,11 @@ public class UserHealthController {
         boolean deleted = userHealthService.deleteUserHealthData(email);
 
         if (deleted) {
-            JsonObject response = Json.createObjectBuilder()
+            JsonObject resp = Json.createObjectBuilder()
                     .add("status", "success")
                     .add("message", "Health data deleted successfully")
                     .build();
-            return ResponseEntity.ok(response.toString());
+            return ResponseEntity.ok(resp.toString());
         } else {
             JsonObject error = Json.createObjectBuilder()
                     .add("status", "error")

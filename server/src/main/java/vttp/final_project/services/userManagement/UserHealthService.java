@@ -40,7 +40,6 @@ public class UserHealthService {
         healthData.calculateBmi();
         healthData.calculateBmr();
         healthData.calculateTdee();
-
         // Save to database
         userHealthRepo.saveUserHealthData(healthData);
 
@@ -56,12 +55,12 @@ public class UserHealthService {
         return userHealthRepo.deleteUserHealthData(userId);
     }
 
-    // Check if user has health data
+   /* // Check if user has health data
     public boolean userHasHealthData(String email) {
         Integer userId = userSqlRepo.getUserIdByEmail(email);
         if (userId == null) {
             return false;
         }
         return userHealthRepo.existsByUserId(userId);
-    }
+    }*/
 }

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class GoogleCalendarService {
 
     private static final String APPLICATION_NAME = "NutriSense";
-    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance(); // Use GsonFactory instead
+    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     @Value("${google.client.id}")
     private String clientId;
@@ -55,10 +55,8 @@ public class GoogleCalendarService {
 
         // Build credential object
         Credential credential = getCredentials(user.getGoogleRefreshToken());
-
         // Create a secure NetHttpTransport
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-
         // Build calendar service
         return new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(APPLICATION_NAME)
@@ -71,16 +69,13 @@ public class GoogleCalendarService {
 
             Calendar service = getCalendarService(userId);
             System.out.println("Successfully obtained Calendar service");
-
             // Create event
             Event event = new Event()
                     .setSummary("NutriSense Meal Plan: " + mealPlan.getName())
                     .setDescription(buildEventDescription(mealPlan));
             System.out.println("Created event object: " + event.getSummary());
-
             // Calculate the event date for a full day event
             LocalDate eventDate = calculateEventDate(mealPlan.getDayOfWeek());
-
             // For a full-day event, we use dates without times
             EventDateTime startDate = new EventDateTime()
                     .setDate(new DateTime(eventDate.toString())); // Use string format YYYY-MM-DD
@@ -123,7 +118,6 @@ public class GoogleCalendarService {
             }
             description.append("\n");
         }
-
         return description.toString();
     }
 
@@ -139,23 +133,15 @@ public class GoogleCalendarService {
             System.out.println("No day specified (Any day), using tomorrow: " + tomorrow);
             return tomorrow;
         }
-
-        // From here, we know dayOfWeek is not null
-
         // Convert between different day numbering systems
-        // Your system: 0=Sunday, 1=Monday, ..., 6=Saturday
-        // Java's system: 1=Monday, 2=Tuesday, ..., 7=Sunday
-
-        // Convert your dayOfWeek to Java's DayOfWeek value
+        // Convert dayOfWeek to Java's DayOfWeek value
         int javaDayOfWeek;
         if (dayOfWeek == 0) {
             javaDayOfWeek = 7; // Sunday in Java is 7
         } else {
             javaDayOfWeek = dayOfWeek; // Other days (Mon-Sat) are just offset by 0
         }
-
         System.out.println("Target day: " + dayOfWeek + " (Java day: " + javaDayOfWeek + ")");
-
         int currentJavaDayOfWeek = today.getDayOfWeek().getValue(); // 1-7 (Monday-Sunday)
         System.out.println("Current Java day of week: " + currentJavaDayOfWeek);
 

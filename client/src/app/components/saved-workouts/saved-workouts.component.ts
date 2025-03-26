@@ -43,7 +43,7 @@ export class SavedWorkoutsComponent implements OnInit {
   }
 
   deleteWorkout(workoutId: string, event: Event): void {
-    // Prevent event bubbling if clicking on a button within a clickable container
+    // Prevent event bubbling
     event.stopPropagation();
 
     if (confirm('Are you sure you want to delete this workout?')) {

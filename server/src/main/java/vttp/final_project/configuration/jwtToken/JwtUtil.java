@@ -21,11 +21,11 @@ public class JwtUtil {
     private String secret;
 
     // Limits time duration from theft/session hijacking
-    // Forces reauthentication for better security
+    // Forces re-authentication for better security
     @Value("${jwt.expiration}")
     private long expiration;
 
-    // Generate secret key from our secret string
+    /* Generates a secret key from our secret string*/
     private Key getSigningKey() {
         // Converts the secret string into a byte array using UTF-8 encoding
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
@@ -39,17 +39,17 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, email);
     }
-
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims) // Any custom data
-                .setSubject(subject) // Primary Identifier: email
+                .setSubject(subject) // Primary Identifier: User's email
                 .setIssuedAt(new Date(System.currentTimeMillis())) // Sets time of token creation
                 .setExpiration(new Date(System.currentTimeMillis() + expiration)) // Sets the expiration
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Signs token with secret key and HMAC-SHA256 alogrithm
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Signs token with secret key using HMAC-SHA256 alogrithm
                 .compact(); // Serializes everything into the final JWT string
 
         /*  Resulting token is a string with three parts separated by dots (header.payload.signature)
+        - Header: algorithm info; payload: Claims: subject,issued time,expiration ; signature: Ensures the token is not tampered
         e.g. eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIn0.rEf6GdgGMrDpxyS7V9ZP9wvnTzwk5jrVSFZRGBzW7ZE */
     }
 
@@ -62,9 +62,7 @@ public class JwtUtil {
 
     /* Data Extraction helper methods */
     // Extract email from token
-    public String extractEmail(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    public String extractEmail(String token) {return extractClaim(token, Claims::getSubject);}
     // Extract expiration date from token
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -88,13 +86,4 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    /* The Big Picture
-    This code implements the core JWT lifecycle:
-
-    Creation: When a user successfully logs in, you generate a token containing their email
-    Transmission: The token is sent to the client (typically in an HTTP response)
-    Storage: The client stores the token (often in browser storage)
-    Usage: For subsequent requests, the client includes the token (typically in the Authorization header)
-    Validation: Your server validates the token to authenticate the request
-    Extraction: You extract the user's identity from the token to authorize appropriate access*/
 }

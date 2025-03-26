@@ -11,7 +11,6 @@ public class User {
     private String email;
     private String password;
     private Boolean isPremium;
-
     private String googleAccessToken;
     private String googleRefreshToken;
     private Date googleTokenExpiry;

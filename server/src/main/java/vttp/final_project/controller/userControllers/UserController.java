@@ -22,7 +22,6 @@ public class UserController {
     @Autowired
     private UserSqlRepository userSqlRepo;
 
-
     @GetMapping("/premium-status")
     public ResponseEntity<String> getPremiumStatus(Principal principal) {
         if (principal == null) {

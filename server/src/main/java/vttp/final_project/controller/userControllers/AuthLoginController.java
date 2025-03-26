@@ -93,9 +93,4 @@ public class AuthLoginController {
     }
 
 
-    // We can add more auth-related endpoints here later, such as:
-    // - /api/auth/logout
-    // - /api/auth/refresh-token
-    // - /api/auth/forgot-password
-    // - /api/auth/reset-password
 }

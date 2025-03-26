@@ -38,7 +38,6 @@ public class WeightLogService {
         }
 
         LocalDate today = LocalDate.now();
-
         // Check if there's already a log for today
         WeightLog existingLog = weightLogRepo.getWeightLogForDate(userId, today);
 
@@ -65,15 +64,12 @@ public class WeightLogService {
         if (userId == null) {
             throw new RuntimeException("User not found: " + email);
         }
-
         WeightLog log = weightLogRepo.getWeightLogById(logId, userId);
         if (log == null) {
             throw new RuntimeException("Weight log not found");
         }
-
         log.setWeight(weight);
         log.setNotes(notes);
-
         boolean updated = weightLogRepo.updateWeightLog(log);
         if (!updated) {
             throw new RuntimeException("Failed to update weight log");
@@ -88,7 +84,6 @@ public class WeightLogService {
         if (userId == null) {
             throw new RuntimeException("User not found: " + email);
         }
-
         return weightLogRepo.deleteWeightLog(logId, userId);
     }
 

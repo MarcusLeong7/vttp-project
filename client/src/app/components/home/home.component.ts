@@ -84,14 +84,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Sorted weight logs for the table
+  // Sort weight logs for the table
   get sortedWeightLogs(): WeightLog[] {
     return [...this.weightLogs].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }
 
-// Delete a weight log
+  // Delete a weight log
   deleteWeightLog(id: number, event: Event): void {
     event.stopPropagation(); // Prevent event bubbling
 
@@ -118,7 +118,6 @@ export class HomeComponent implements OnInit {
     if (this.weightLogs.length === 0) {
       return;
     }
-
     // Sort logs by date (oldest to newest)
     const sortedLogs = [...this.weightLogs].sort((a, b) =>
       new Date(a.date).getTime() - new Date(b.date).getTime()

@@ -16,7 +16,6 @@ export class HeaderComponent {
 
   showMobileMenu = false;
 
-
   get currentUser(): User | null {
     return this.authService.currentUserValue;
   }

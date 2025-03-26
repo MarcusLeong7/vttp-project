@@ -1,4 +1,3 @@
-/* Main container */
 .home-container {
   min-height: calc(100vh - 64px); /* Adjust for your toolbar height */
   padding: 40px 0;

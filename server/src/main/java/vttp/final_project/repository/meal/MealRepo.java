@@ -25,11 +25,6 @@ public class MealRepo {
         template.opsForHash().put(String.format(USER_MEALS_KEY, email), meal.getId(), meal);
     }
 
-    // Get a specific meal from a user's collection
-    public Meal getUserMeal(String email, String mealId) {
-        return (Meal) template.opsForHash().get(String.format(USER_MEALS_KEY, email), mealId);
-    }
-
     // Get all meals for a user
     public List<Meal> getAllUserMeals(String email) {
         // Get all meals from the user's collection
@@ -51,5 +46,13 @@ public class MealRepo {
     public boolean userHasMeal(String email, String mealId) {
         return template.opsForHash().hasKey(String.format(USER_MEALS_KEY, email), mealId);
     }
+
+    /*
+    // Get a specific meal from a user's collection
+    public Meal getUserMeal(String email, String mealId) {
+        return (Meal) template.opsForHash().get(String.format(USER_MEALS_KEY, email), mealId);
+    }
+    */
+
 }
 

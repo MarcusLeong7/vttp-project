@@ -11,6 +11,7 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class EmailAsyncConfig {
 
+    /* Dedicated thread pool just for sending emails in the background */
     @Bean(name = "emailExecutor")
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
