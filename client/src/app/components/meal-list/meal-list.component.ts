@@ -28,7 +28,12 @@ export class MealListComponent {
     }
   }
 
-  viewRecipe(mealId: string) {
+  viewRecipe(mealId: string, event?: Event) {
+    // If an event was provided, prevent default behavior and stop propagation
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     this.mealSvc.getRecipeUrl(mealId).subscribe({
       next: (url) => {

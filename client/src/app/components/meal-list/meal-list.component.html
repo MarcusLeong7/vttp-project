@@ -31,7 +31,7 @@
               <span class="value">{{ meal.fats }}</span>
             </div>
           </div>
-          <button class="recipe-button" (click)="viewRecipe(meal.id)">View Recipe</button>
+          <button class="recipe-button" (click)="viewRecipe(meal.id,$event)">View Recipe</button>
         </div>
       </div>
     } @empty {

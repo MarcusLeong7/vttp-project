@@ -78,3 +78,54 @@
 .results-container {
   margin-top: 24px;
 }
+
+/* Add or update these styles in meal-search.component.css */
+
+@media (max-width: 768px) {
+  .meal-search-container {
+    padding: 16px;
+    margin: 8px;
+  }
+
+  .search-criteria-table {
+    border-spacing: 8px 4px;
+  }
+
+  .search-criteria-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .button-container button {
+    width: 100%;
+  }
+
+  .page-container {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    padding: 10px;
+  }
+
+  .meal-search-container {
+    max-width: 100%;
+    margin: 4px;
+    padding: 12px;
+  }
+
+  .results-container {
+    margin-top: 16px;
+  }
+
+  h2.mat-headline-6 {
+    font-size: 1.1rem;
+  }
+}
